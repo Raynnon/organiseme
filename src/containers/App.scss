@@ -1,0 +1,22 @@
+@import "~bootstrap/scss/bootstrap";
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css");
+
+$theme-colors: (
+  "primary": #2b2d42,
+  "secondary": #444860,
+  "light": #e7e7ea,
+);
+
+@import "~bootstrap/scss/bootstrap";
+
+html,
+body,
+#root {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  display: flex;
+}
