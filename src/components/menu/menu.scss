@@ -1,10 +1,24 @@
 .active {
-  color: #00cf6e;
   border-left: 3px solid #00cf6e;
+}
+
+.active img {
+  filter: invert(50%) sepia(44%) saturate(3439%) hue-rotate(120deg)
+    brightness(106%) contrast(102%);
 }
 
 ul {
   list-style: none;
   padding: 0;
   margin: 0;
+}
+
+.menu-icon {
+  width: 2.5vw;
+  min-width: 30px;
+  margin-bottom: 2vh;
+}
+
+li:nth-child(n + 2) img {
+  margin-top: 2vh;
 }

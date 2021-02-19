@@ -1,34 +1,56 @@
-import { Image, Col } from "react-bootstrap";
-import miniLogo from "./images/organise-me-mini-logo.png";
+import React from "react";
 import "./menu.scss";
 
-function Menu() {
+import Image from "react-bootstrap/Image";
+
+import miniLogo from "./images/organise-me-mini-logo.png";
+import listImage from "./images/list.png";
+import profileImage from "./images/profile.png";
+
+function Menu(props) {
+  const handleClick = (e) => {
+    let currentClass = e.currentTarget.className;
+    const parentChildren = e.currentTarget.parentNode.childNodes;
+
+    if (currentClass === "active") {
+      return;
+    }
+
+    parentChildren.forEach((child) => {
+      child.className = "inactive";
+    });
+
+    e.currentTarget.className = "active";
+    props.onChange(e.currentTarget.id);
+  };
+
   return (
-    <Col
-      xs={1}
-      as="nav"
-      className="border-right border-secondary menu-border text-center pt-5"
-    >
-      <ul>
-        <li>
-          <Image
-            className="img-fluid"
-            src={miniLogo}
-            roundedCircle
-            style={{ width: "2.5vw" }}
-          />
-        </li>
-        <li className="active">
-          <i className="bi bi-list-check" style={{ fontSize: "2.5vw" }}></i>
-        </li>
-        <li>
-          <i
-            className="bi bi-person-fill text-secondary"
-            style={{ fontSize: "2.5vw" }}
-          ></i>
-        </li>
-      </ul>
-    </Col>
+    <ul>
+      <li>
+        <Image
+          className="img-fluid menu-icon"
+          src={miniLogo}
+          alt="mini-logo-organise-me"
+          roundedCircle
+        />
+      </li>
+      <li id="List" className="active" onClick={(e) => handleClick(e)}>
+        <Image
+          className="img-fluid menu-icon"
+          src={listImage}
+          alt="mini-logo-organise-me"
+          roundedCircle
+        />
+      </li>
+      <li id="Profile" className="inactive" onClick={(e) => handleClick(e)}>
+        <Image
+          className="img-fluid menu-icon"
+          src={profileImage}
+          alt="mini-logo-organise-me"
+          roundedCircle
+        />
+      </li>
+    </ul>
   );
 }
 
