@@ -1,13 +1,16 @@
 import React from "react";
+import Task from "./Task";
+
 import { Container, Row, Col } from "react-bootstrap";
 import Image from "react-bootstrap/Image";
 
+import checkImage from "./images/check.png";
 import profileImage from "./images/florian.png";
 
 function Profile() {
   return (
     <Container>
-      <Row className="bg-primary rounded pt-5">
+      <Row className="bg-primary rounded pt-5 mb-5">
         <Col xs={12} md={3}>
           <Image
             className="pt-5 pb-5 mx-auto d-block"
@@ -26,16 +29,10 @@ function Profile() {
           <p className="text-secondary text-center">Progress</p>
         </Col>
       </Row>
-      <Container className="pl-0 text-light" fluid>
-        <Row className="bg-primary rounded mt-5">
-          <p>Playing videogames</p>
-        </Row>
-        <Row className="bg-primary rounded mt-5">
-          <p>Find a job</p>
-        </Row>
-        <Row className="bg-primary rounded mt-5">
-          <p>Bake a cake</p>
-        </Row>
+      <Container className="pl-0 pr-0 text-light" fluid>
+        <Task completed={true} taskName="Read a book" />
+        <Task completed={false} taskName="Finish this site" />
+        <Task completed={false} taskName="Play Counter Strike" />
       </Container>
     </Container>
   );
