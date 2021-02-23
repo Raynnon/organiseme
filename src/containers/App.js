@@ -27,7 +27,7 @@ function App() {
           xs={2}
           md={1}
           as="nav"
-          className="border-right border-secondary menu-border text-center pt-5 pl-0 pr-0"
+          className="border-right border-secondary menu-border text-center pt-5 px-0"
         >
           <Menu activeElement={activeElement} onChange={handleChange} />
         </Col>
