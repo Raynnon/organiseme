@@ -1,13 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.scss";
+
 import { Container, Row, Col } from "react-bootstrap";
+import { userLogin } from "../apiRoutes/userRoutes";
 
 import Menu from "../components/menu/Menu";
 import List from "../components/list/List";
 import Profile from "../components/profile/Profile";
 
 function App() {
+  const [token, setToken] = useState("");
+  const [axiosOptions, setAxiosOptions] = useState({});
   const [activeElement, setActiveElement] = useState("List");
+
+  useEffect(() => {
+    const login = async () => {
+      const data = await userLogin("test@gmail.com", "testtest");
+      setToken(data.token);
+      setAxiosOptions(data.options);
+    };
+
+    login();
+  }, []);
 
   const handleChange = (active) => {
     setActiveElement(active);
@@ -15,9 +29,9 @@ function App() {
 
   let element;
   if (activeElement === "List") {
-    element = <List />;
+    element = <List token={token} axiosOptions={axiosOptions} />;
   } else if (activeElement === "Profile") {
-    element = <Profile />;
+    element = <Profile token={token} axiosOptions={axiosOptions} />;
   }
 
   return (

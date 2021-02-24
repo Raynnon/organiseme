@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { ResponsivePie } from "@nivo/pie";
+import { getTasks, addTasks, deleteTasks } from "../../apiRoutes/tasksRoutes";
+
 import Task from "./Task";
 
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
@@ -7,71 +9,48 @@ import Image from "react-bootstrap/Image";
 
 import profileImage from "./images/florian.png";
 
-function Profile() {
-  const [token, setToken] = useState("");
+function Profile(props) {
   const [tasks, setTasks] = useState([]);
-  const [taskListUpdate, setTaskListUpdate] = useState(false);
   const [taskName, setTaskName] = useState("");
-  const [axiosOptions, setAxiosOptions] = useState({});
-  const urlTasks = "http://localhost:4000/tasks";
 
-  useEffect(() => {
-    const getToken = async () => {
-      try {
-        const login = await axios.post("http://localhost:4000/users/login", {
-          email: "test@gmail.com",
-          password: "testtest",
-        });
+  const token = props.token;
+  const axiosOptions = props.axiosOptions;
+  const data = [
+    {
+      id: "completed",
+      label: "completed",
+      value: 75,
+    },
+    {
+      id: "in-progress",
+      label: "In Progress",
+      value: 25,
+    },
+  ];
 
-        setToken(login.data.token);
-        setAxiosOptions({
-          headers: { Authorization: "Bearer " + login.data.token },
-        });
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    getToken();
-  }, []);
-
-  useEffect(() => {
-    setTaskListUpdate(false);
-    if (token) {
-      const getTasks = async () => {
-        try {
-          const tasksList = await axios.get(urlTasks, axiosOptions);
-
-          setTasks(tasksList.data);
-        } catch (e) {
-          console.log(e);
-        }
-      };
-
-      getTasks();
-    }
-  }, [token, taskListUpdate, axiosOptions]);
-
-  const handleChange = () => {
-    setTaskListUpdate(true);
+  const refreshTasks = () => {
+    getTasks(axiosOptions).then((data) => setTasks(data));
   };
 
-  const handleChangeTaskName = (e) => {
+  useEffect(() => {
+    getTasks(axiosOptions).then((data) => setTasks(data));
+  }, [axiosOptions]);
+
+  const handleAddTaskName = (e) => {
     setTaskName(e.target.value);
   };
 
   const handleAddTask = (e) => {
     e.preventDefault();
-    axios.post(
-      urlTasks,
-      {
-        description: taskName,
-        completed: false,
-      },
-      axiosOptions
-    );
 
-    handleChange();
+    addTasks(taskName, axiosOptions).then(refreshTasks());
+  };
+
+  const handleDelete = (id) => {
+    const newTasks = tasks.filter((task) => task._id !== id);
+    setTasks(newTasks);
+
+    deleteTasks(id, axiosOptions);
   };
 
   return (
@@ -87,12 +66,36 @@ function Profile() {
         </Col>
         <Col xs={12} md={6}>
           <h2 className="text-white">Florian</h2>
-          <p className="text-secondary">
-            Hello! You have {tasks.length} tasks.
-          </p>
+          <p className="text-secondary">Hello! You have X tasks.</p>
         </Col>
         <Col xs={12} md={3}>
-          <p className="text-secondary text-center">Progress</p>
+          <Row>
+            <p className="text-secondary">Progress</p>
+          </Row>
+          <Row style={{ height: "150px" }}>
+            <ResponsivePie
+              data={data}
+              sortByValue={false}
+              innerRadius={0.9}
+              colors={{ scheme: "nivo" }}
+              enableRadialLabels={false}
+              enableSliceLabels={false}
+              isInteractive={false}
+              fill={[
+                {
+                  match: {
+                    id: "completed",
+                  },
+                },
+                {
+                  match: {
+                    id: "in-progress",
+                  },
+                },
+              ]}
+              legends={[]}
+            />
+          </Row>
         </Col>
       </Row>
 
@@ -101,16 +104,16 @@ function Profile() {
           className="pl-0 ml-0 text-center"
           onSubmit={(e) => handleAddTask(e)}
         >
-          <Form.Row className="justify-content-center">
+          <Form.Row className="justify-content-center align-items-center mb-3">
             <Col sm={3} className="my-1">
               <Form.Control
                 className="bg-primary border-secondary text-light"
                 id="inlineFormInputName"
                 placeholder="New task"
-                onChange={handleChangeTaskName}
+                onChange={handleAddTaskName}
               />
             </Col>
-            <Col xs="auto" className="mb-4">
+            <Col xs="auto" className="mb-0">
               <Button className="text-light" type="submit">
                 Add
               </Button>
@@ -118,18 +121,21 @@ function Profile() {
           </Form.Row>
         </Form>
 
-        {tasks.map((task) => {
-          return (
-            <Task
-              key={task._id}
-              id={task._id}
-              completed={task.completed}
-              taskName={task.description}
-              token={token}
-              onChange={handleChange}
-            />
-          );
-        })}
+        {tasks
+          ? tasks.map((task) => {
+              return (
+                <Task
+                  key={task._id}
+                  id={task._id}
+                  completed={task.completed}
+                  taskName={task.description}
+                  token={token}
+                  onDelete={handleDelete}
+                  axiosOptions={axiosOptions}
+                />
+              );
+            })
+          : null}
       </Container>
     </Container>
   );

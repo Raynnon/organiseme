@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { updateTasks } from "../../apiRoutes/tasksRoutes";
 
 import "./task.css";
 
@@ -10,30 +10,16 @@ import checkImage from "./images/check.png";
 
 function Task(props) {
   const [completed, setCompleted] = useState(props.completed);
-  const [taskName, setTaskName] = useState(props.taskName);
-  const [axiosOptions] = useState({
-    headers: { Authorization: "Bearer " + props.token },
-  });
+  const taskName = props.taskName;
+  const axiosOptions = props.axiosOptions;
 
-  const handleClickUpdate = (e) => {
-    const url = "http://localhost:4000/tasks/" + props.id;
-
-    axios.patch(
-      url,
-      {
-        completed: !completed,
-      },
-      axiosOptions
-    );
-
+  const handleClickUpdate = () => {
     setCompleted(!completed);
+    updateTasks(props.id, !completed, axiosOptions);
   };
 
   const handleClickDelete = () => {
-    props.onChange(true);
-    const url = "http://localhost:4000/tasks/" + props.id;
-
-    axios.delete(url, axiosOptions);
+    props.onDelete(props.id);
   };
 
   return (
@@ -44,7 +30,7 @@ function Task(props) {
           alt="checkbox"
           className={completed ? "activated" : ""}
           style={{ width: "23px" }}
-          onClick={(e) => handleClickUpdate(e)}
+          onClick={() => handleClickUpdate()}
         />
       </Col>
       <Col xs={12} sm={5}>
