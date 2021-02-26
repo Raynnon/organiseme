@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import "./task.css";
 
@@ -8,11 +8,9 @@ import Image from "react-bootstrap/Image";
 import checkImage from "./images/check.png";
 
 function Task(props) {
-  //const [completed, setCompleted] = useState(props.completed);
   const taskName = props.taskName;
 
   const handleClickUpdate = () => {
-    //props.completed = true;
     props.onUpdate(props.id, !props.completed);
   };
 

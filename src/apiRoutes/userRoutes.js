@@ -2,6 +2,7 @@ import axios from "axios";
 
 const url = "http://localhost:4000/users/";
 let token = "";
+let name = "";
 let options = {};
 
 export const userLogin = async (email, password) => {
@@ -12,12 +13,13 @@ export const userLogin = async (email, password) => {
     });
 
     token = await login.data.token;
+    name = await login.data.user.name;
 
     options = {
       headers: { Authorization: "Bearer " + token },
     };
 
-    return { token, options };
+    return { token, name, options };
   } catch (e) {
     console.log(e);
   }

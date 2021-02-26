@@ -12,14 +12,14 @@ import Pie from "./Pie";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import Image from "react-bootstrap/Image";
 
-import profileImage from "./images/florian.png";
+import profileImage from "../images/florian.png";
 
 function Profile(props) {
   const [tasks, setTasks] = useState([]);
   const [taskName, setTaskName] = useState("");
   const [tasksCompleted, setTasksCompleted] = useState(0);
   const [tasksInProgress, setTasksInProgress] = useState(0);
-  const [percentage, setPercentage] = useState("0%");
+  const [percentage, setPercentage] = useState(0);
 
   const token = props.token;
   const axiosOptions = props.axiosOptions;
@@ -30,13 +30,16 @@ function Profile(props) {
     });
   }, [axiosOptions]);
 
+  // Reasign tasks completion
   useEffect(() => {
     const completed = tasks.filter((task) => task.completed).length;
     const inProgress = tasks.length - completed;
 
     setTasksCompleted(completed);
     setTasksInProgress(inProgress);
-    setPercentage(Math.round((completed / tasks.length) * 100) + "%");
+
+    let percentage = Math.round((completed / tasks.length) * 100);
+    isNaN(percentage) ? setPercentage("") : setPercentage(percentage);
   }, [tasks]);
 
   const handleAddTaskName = (e) => {
@@ -66,7 +69,7 @@ function Profile(props) {
   };
 
   // DELETE TASK
-  const handleDelete = (id, completed) => {
+  const handleDelete = (id) => {
     const newTasks = tasks.filter((task) => task._id !== id);
     setTasks(newTasks);
 
@@ -85,9 +88,9 @@ function Profile(props) {
           />
         </Col>
         <Col className="text-center my-auto" xs={12} md={6}>
-          <h2 className="text-white">Florian</h2>
+          <h2 className="text-white">{props.username}</h2>
           <p className="text-secondary">
-            Hello! You have {tasksInProgress} tasks to finish.
+            Hello, you have {tasksInProgress} tasks to achieve!
           </p>
         </Col>
         <Col xs={12} md={3}>
@@ -102,7 +105,7 @@ function Profile(props) {
                 left: 0,
               }}
             >
-              {percentage}
+              {percentage + "%"}
             </h2>
           </Row>
         </Col>

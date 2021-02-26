@@ -10,6 +10,7 @@ import Profile from "../components/profile/Profile";
 
 function App() {
   const [token, setToken] = useState("");
+  const [username, setUsername] = useState("");
   const [axiosOptions, setAxiosOptions] = useState({});
   const [activeElement, setActiveElement] = useState("List");
 
@@ -17,6 +18,7 @@ function App() {
     const login = async () => {
       const data = await userLogin("test@gmail.com", "testtest");
       setToken(data.token);
+      setUsername(data.name);
       setAxiosOptions(data.options);
     };
 
@@ -29,9 +31,13 @@ function App() {
 
   let element;
   if (activeElement === "List") {
-    element = <List token={token} axiosOptions={axiosOptions} />;
+    element = (
+      <List token={token} username={username} axiosOptions={axiosOptions} />
+    );
   } else if (activeElement === "Profile") {
-    element = <Profile token={token} axiosOptions={axiosOptions} />;
+    element = (
+      <Profile token={token} username={username} axiosOptions={axiosOptions} />
+    );
   }
 
   return (
