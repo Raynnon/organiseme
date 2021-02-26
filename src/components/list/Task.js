@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { updateTasks } from "../../apiRoutes/tasksRoutes";
 
 import "./task.css";
 
@@ -9,17 +8,16 @@ import Image from "react-bootstrap/Image";
 import checkImage from "./images/check.png";
 
 function Task(props) {
-  const [completed, setCompleted] = useState(props.completed);
+  //const [completed, setCompleted] = useState(props.completed);
   const taskName = props.taskName;
-  const axiosOptions = props.axiosOptions;
 
   const handleClickUpdate = () => {
-    setCompleted(!completed);
-    updateTasks(props.id, !completed, axiosOptions);
+    //props.completed = true;
+    props.onUpdate(props.id, !props.completed);
   };
 
   const handleClickDelete = () => {
-    props.onDelete(props.id);
+    props.onDelete(props.id, props.completed);
   };
 
   return (
@@ -28,7 +26,8 @@ function Task(props) {
         <Image
           src={checkImage}
           alt="checkbox"
-          className={completed ? "activated" : ""}
+          id="check"
+          className={props.completed ? "activated" : ""}
           style={{ width: "23px" }}
           onClick={() => handleClickUpdate()}
         />
@@ -37,7 +36,7 @@ function Task(props) {
         <p className="mb-0">{taskName}</p>
       </Col>
       <Col xs={12} sm={5} className="d-flex justify-content-center">
-        {completed ? (
+        {props.completed ? (
           <p
             className="mb-0 mr-0 p-2 text-success rounded-pill"
             style={{ backgroundColor: "#1f6153" }}

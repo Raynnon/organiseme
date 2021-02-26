@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { ResponsivePie } from "@nivo/pie";
-import { getTasks, addTasks, deleteTasks } from "../../apiRoutes/tasksRoutes";
+import {
+  getTasks,
+  addTasks,
+  updateTasks,
+  deleteTasks,
+} from "../../apiRoutes/tasksRoutes";
 
 import Task from "./Task";
 
@@ -12,41 +17,77 @@ import profileImage from "./images/florian.png";
 function Profile(props) {
   const [tasks, setTasks] = useState([]);
   const [taskName, setTaskName] = useState("");
+  const [tasksCompleted, setTasksCompleted] = useState(0);
+  const [tasksInProgress, setTasksInProgress] = useState(0);
 
   const token = props.token;
   const axiosOptions = props.axiosOptions;
-  const data = [
-    {
-      id: "completed",
-      label: "completed",
-      value: 75,
-    },
-    {
-      id: "in-progress",
-      label: "In Progress",
-      value: 25,
-    },
-  ];
 
-  const refreshTasks = () => {
-    getTasks(axiosOptions).then((data) => setTasks(data));
+  const completedManager = (completed, inProgress) => {
+    if (completed) {
+      setTasksCompleted((prevTasksCompleted) => prevTasksCompleted + completed);
+    }
+
+    if (inProgress) {
+      setTasksInProgress(
+        (prevTasksInProgress) => prevTasksInProgress + inProgress
+      );
+    }
   };
 
   useEffect(() => {
-    getTasks(axiosOptions).then((data) => setTasks(data));
+    getTasks(axiosOptions).then((newTasks) => {
+      setTasks(newTasks);
+
+      const completed = newTasks.filter((task) => task.completed).length;
+      const inProgress = newTasks.length - completed;
+
+      completedManager(completed, inProgress);
+    });
   }, [axiosOptions]);
 
   const handleAddTaskName = (e) => {
     setTaskName(e.target.value);
   };
 
+  //REFRESH TASKS
+  const refreshTasks = () => {
+    getTasks(axiosOptions).then((newTasks) => setTasks(newTasks));
+  };
+
+  // ADD TASK
   const handleAddTask = (e) => {
     e.preventDefault();
 
     addTasks(taskName, axiosOptions).then(refreshTasks());
+    if (taskName) {
+      completedManager(0, 1);
+    }
+  };
+  useEffect(() => {
+    console.log("TASKKKKS");
+  }, [tasks]);
+
+  // UPDATE TASK
+  const handleUpdate = (id, completed) => {
+    completed ? completedManager(1, -1) : completedManager(-1, 1);
+
+    setTasks(
+      tasks.map((task) => {
+        if (task._id === id) {
+          task.completed = completed;
+        }
+        return task;
+      })
+    );
+
+    updateTasks(id, completed, axiosOptions);
   };
 
-  const handleDelete = (id) => {
+  // DELETE TASK
+  const handleDelete = (id, completed) => {
+    completed ? completedManager(-1, 0) : completedManager(0, -1);
+
     const newTasks = tasks.filter((task) => task._id !== id);
     setTasks(newTasks);
 
@@ -55,46 +96,68 @@ function Profile(props) {
 
   return (
     <Container>
-      <Row className="bg-primary rounded pt-5 mb-5">
+      <Row className="bg-primary rounded mb-5">
         <Col xs={12} md={3}>
           <Image
             className="py-5 mx-auto d-block"
             src={profileImage}
             alt="profile-image"
-            style={{ width: "60%", maxWidth: "150px" }}
+            style={{ width: "150px" }}
           />
         </Col>
-        <Col xs={12} md={6}>
+        <Col className="text-center my-auto" xs={12} md={6}>
           <h2 className="text-white">Florian</h2>
-          <p className="text-secondary">Hello! You have X tasks.</p>
+          <p className="text-secondary">
+            Hello! You have {tasksInProgress} tasks to finish.
+          </p>
         </Col>
         <Col xs={12} md={3}>
-          <Row>
-            <p className="text-secondary">Progress</p>
-          </Row>
-          <Row style={{ height: "150px" }}>
+          <Row className="my-5 position-relative" style={{ height: "150px" }}>
             <ResponsivePie
-              data={data}
-              sortByValue={false}
+              data={[
+                {
+                  id: "in-progress",
+                  label: "In Progress",
+                  value: tasksInProgress,
+                },
+                {
+                  id: "completed",
+                  label: "completed",
+                  value: tasksCompleted,
+                },
+              ]}
               innerRadius={0.9}
-              colors={{ scheme: "nivo" }}
+              colors={["rgb(74, 63, 119)", "#298a5d"]}
               enableRadialLabels={false}
               enableSliceLabels={false}
               isInteractive={false}
               fill={[
                 {
                   match: {
-                    id: "completed",
+                    id: "in-progress",
                   },
                 },
                 {
                   match: {
-                    id: "in-progress",
+                    id: "completed",
                   },
                 },
               ]}
               legends={[]}
             />
+            <h2
+              className="text-white position-absolute d-flex align-items-center justify-content-center mb-0"
+              style={{
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0,
+              }}
+            >
+              {Math.round(
+                (tasksCompleted / (tasksInProgress + tasksCompleted)) * 100
+              ) + "%"}
+            </h2>
           </Row>
         </Col>
       </Row>
@@ -130,6 +193,7 @@ function Profile(props) {
                   completed={task.completed}
                   taskName={task.description}
                   token={token}
+                  onUpdate={handleUpdate}
                   onDelete={handleDelete}
                   axiosOptions={axiosOptions}
                 />
