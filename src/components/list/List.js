@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { ResponsivePie } from "@nivo/pie";
 import {
   getTasks,
   addTasks,
@@ -8,6 +7,7 @@ import {
 } from "../../apiRoutes/tasksRoutes";
 
 import Task from "./Task";
+import Pie from "./Pie";
 
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import Image from "react-bootstrap/Image";
@@ -19,59 +19,40 @@ function Profile(props) {
   const [taskName, setTaskName] = useState("");
   const [tasksCompleted, setTasksCompleted] = useState(0);
   const [tasksInProgress, setTasksInProgress] = useState(0);
+  const [percentage, setPercentage] = useState("0%");
 
   const token = props.token;
   const axiosOptions = props.axiosOptions;
 
-  const completedManager = (completed, inProgress) => {
-    if (completed) {
-      setTasksCompleted((prevTasksCompleted) => prevTasksCompleted + completed);
-    }
-
-    if (inProgress) {
-      setTasksInProgress(
-        (prevTasksInProgress) => prevTasksInProgress + inProgress
-      );
-    }
-  };
-
   useEffect(() => {
     getTasks(axiosOptions).then((newTasks) => {
       setTasks(newTasks);
-
-      const completed = newTasks.filter((task) => task.completed).length;
-      const inProgress = newTasks.length - completed;
-
-      completedManager(completed, inProgress);
     });
   }, [axiosOptions]);
+
+  useEffect(() => {
+    const completed = tasks.filter((task) => task.completed).length;
+    const inProgress = tasks.length - completed;
+
+    setTasksCompleted(completed);
+    setTasksInProgress(inProgress);
+    setPercentage(Math.round((completed / tasks.length) * 100) + "%");
+  }, [tasks]);
 
   const handleAddTaskName = (e) => {
     setTaskName(e.target.value);
   };
 
-  //REFRESH TASKS
-  const refreshTasks = () => {
-    getTasks(axiosOptions).then((newTasks) => setTasks(newTasks));
-  };
-
   // ADD TASK
   const handleAddTask = (e) => {
     e.preventDefault();
-
-    addTasks(taskName, axiosOptions).then(refreshTasks());
-    if (taskName) {
-      completedManager(0, 1);
-    }
+    addTasks(taskName, axiosOptions).then(
+      getTasks(axiosOptions).then((newTasks) => setTasks(newTasks))
+    );
   };
-  useEffect(() => {
-    console.log("TASKKKKS");
-  }, [tasks]);
 
   // UPDATE TASK
   const handleUpdate = (id, completed) => {
-    completed ? completedManager(1, -1) : completedManager(-1, 1);
-
     setTasks(
       tasks.map((task) => {
         if (task._id === id) {
@@ -86,8 +67,6 @@ function Profile(props) {
 
   // DELETE TASK
   const handleDelete = (id, completed) => {
-    completed ? completedManager(-1, 0) : completedManager(0, -1);
-
     const newTasks = tasks.filter((task) => task._id !== id);
     setTasks(newTasks);
 
@@ -113,38 +92,7 @@ function Profile(props) {
         </Col>
         <Col xs={12} md={3}>
           <Row className="my-5 position-relative" style={{ height: "150px" }}>
-            <ResponsivePie
-              data={[
-                {
-                  id: "in-progress",
-                  label: "In Progress",
-                  value: tasksInProgress,
-                },
-                {
-                  id: "completed",
-                  label: "completed",
-                  value: tasksCompleted,
-                },
-              ]}
-              innerRadius={0.9}
-              colors={["rgb(74, 63, 119)", "#298a5d"]}
-              enableRadialLabels={false}
-              enableSliceLabels={false}
-              isInteractive={false}
-              fill={[
-                {
-                  match: {
-                    id: "in-progress",
-                  },
-                },
-                {
-                  match: {
-                    id: "completed",
-                  },
-                },
-              ]}
-              legends={[]}
-            />
+            <Pie completed={tasksCompleted} inProgress={tasksInProgress} />
             <h2
               className="text-white position-absolute d-flex align-items-center justify-content-center mb-0"
               style={{
@@ -154,9 +102,7 @@ function Profile(props) {
                 left: 0,
               }}
             >
-              {Math.round(
-                (tasksCompleted / (tasksInProgress + tasksCompleted)) * 100
-              ) + "%"}
+              {percentage}
             </h2>
           </Row>
         </Col>
