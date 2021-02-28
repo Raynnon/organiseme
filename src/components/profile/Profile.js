@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { userUpdate } from "../../apiRoutes/userRoutes";
+
+import { Container, Row, Col, Form } from "react-bootstrap";
 import Image from "react-bootstrap/Image";
 
 import "./profile.css";
@@ -7,10 +9,23 @@ import "./profile.css";
 import profileImage from "../images/florian.png";
 
 function Profile(props) {
-  const [nameChange, setNameChange] = useState(false);
+  const [nameChange, setNameChange] = useState("");
+  const [editStatus, setEditStatus] = useState(false);
+  const options = props.axiosOptions;
 
   const onClickEdit = () => {
-    setNameChange((prevNameChange) => !prevNameChange);
+    setEditStatus((prevEditStatus) => !prevEditStatus);
+  };
+
+  const handleChangeName = (e) => {
+    setNameChange(e.target.value);
+  };
+
+  const onClickConfirm = () => {
+    if (nameChange && props.username !== nameChange) {
+      props.onChange(nameChange);
+      userUpdate({ username: nameChange }, options);
+    }
   };
 
   return (
@@ -26,11 +41,16 @@ function Profile(props) {
         </Col>
         <Col className="my-auto" xs={12} md={6}>
           <Row>
-            <Col xs={12} md={{ span: "3", offset: "3" }}>
-              {!nameChange ? (
+            <Col xs={12} md={{ span: "4", offset: "2" }}>
+              {!editStatus ? (
                 <h2 className="text-white text-center">{props.username}</h2>
               ) : (
-                <h2>lol</h2>
+                <Form.Control
+                  className="bg-primary border-secondary text-light"
+                  id="inputTask"
+                  placeholder={props.username}
+                  onChange={handleChangeName}
+                />
               )}
             </Col>
             <Col
@@ -38,9 +58,21 @@ function Profile(props) {
               md={{ span: "1", offset: "0" }}
               className="my-auto"
             >
-              <p className="edit text-secondary mb-0" onClick={onClickEdit}>
-                Edit
-              </p>
+              {!editStatus ? (
+                <p className="edit text-secondary mb-0" onClick={onClickEdit}>
+                  Edit
+                </p>
+              ) : (
+                <p
+                  className="edit text-secondary mb-0"
+                  onClick={() => {
+                    onClickEdit();
+                    onClickConfirm();
+                  }}
+                >
+                  Confirm
+                </p>
+              )}
             </Col>
           </Row>
         </Col>

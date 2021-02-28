@@ -24,3 +24,21 @@ export const userLogin = async (email, password) => {
     console.log(e);
   }
 };
+
+export const userUpdate = async (data, options) => {
+  console.log(data);
+  if (data.username) {
+    try {
+      await axios.patch(
+        url + "me",
+        {
+          name: data.username,
+        },
+        options
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  } else if (data.password) {
+  }
+};

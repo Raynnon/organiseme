@@ -4,6 +4,7 @@ import "./App.scss";
 import { Container, Row, Col } from "react-bootstrap";
 import { userLogin } from "../apiRoutes/userRoutes";
 
+import Login from "../components/login/Login";
 import Menu from "../components/menu/Menu";
 import List from "../components/list/List";
 import Profile from "../components/profile/Profile";
@@ -13,6 +14,7 @@ function App() {
   const [username, setUsername] = useState("");
   const [axiosOptions, setAxiosOptions] = useState({});
   const [activeElement, setActiveElement] = useState("List");
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     const login = async () => {
@@ -29,6 +31,10 @@ function App() {
     setActiveElement(active);
   };
 
+  const handleChangeName = (newUsername) => {
+    setUsername(newUsername);
+  };
+
   let element;
   if (activeElement === "List") {
     element = (
@@ -36,25 +42,34 @@ function App() {
     );
   } else if (activeElement === "Profile") {
     element = (
-      <Profile token={token} username={username} axiosOptions={axiosOptions} />
+      <Profile
+        token={token}
+        username={username}
+        axiosOptions={axiosOptions}
+        onChange={handleChangeName}
+      />
     );
   }
 
   return (
     <Container fluid className="App bg-dark">
-      <Row>
-        <Col
-          xs={2}
-          md={1}
-          as="nav"
-          className="border-right border-secondary menu-border text-center pt-5 px-0"
-        >
-          <Menu activeElement={activeElement} onChange={handleChange} />
-        </Col>
-        <Col xs={10} md={11} as="main">
-          {element}
-        </Col>
-      </Row>
+      {!loggedIn ? (
+        <Login />
+      ) : (
+        <Row>
+          <Col
+            xs={2}
+            md={1}
+            as="nav"
+            className="border-right border-secondary menu-border text-center pt-5 px-0"
+          >
+            <Menu activeElement={activeElement} onChange={handleChange} />
+          </Col>
+          <Col xs={10} md={11} as="main">
+            {element}
+          </Col>
+        </Row>
+      )}
     </Container>
   );
 }
