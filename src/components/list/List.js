@@ -52,6 +52,9 @@ function Profile(props) {
     addTasks(taskName, axiosOptions).then(
       getTasks(axiosOptions).then((newTasks) => setTasks(newTasks))
     );
+
+    e.target.inputTask.value = "";
+    setTaskName("");
   };
 
   // UPDATE TASK
@@ -113,6 +116,7 @@ function Profile(props) {
 
       <Container className="px-0 text-light" fluid>
         <Form
+          id="new-task"
           className="pl-0 ml-0 text-center"
           onSubmit={(e) => handleAddTask(e)}
         >
@@ -120,8 +124,8 @@ function Profile(props) {
             <Col sm={3} className="my-1">
               <Form.Control
                 className="bg-primary border-secondary text-light"
-                id="inlineFormInputName"
-                placeholder="New task"
+                id="inputTask"
+                placeholder="New Task"
                 onChange={handleAddTaskName}
               />
             </Col>

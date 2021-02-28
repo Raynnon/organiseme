@@ -1,0 +1,9 @@
+.edit:hover {
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .edit {
+    text-align: center;
+  }
+}
