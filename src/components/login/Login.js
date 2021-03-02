@@ -18,24 +18,34 @@ function Profile(props) {
           <Form.Control
             type="text"
             id="login"
-            className="fadeIn second bg-primary border-secondary text-light"
+            className="fadeIn second bg-primary border-secondary text-light text-center mb-2 d-inline w-75"
             name="login"
-            placeholder="Username"
+            placeholder="Email"
           />
           <Form.Control
             type="text"
             id="password"
-            className="fadeIn third bg-primary border-secondary text-light"
+            className="fadeIn third bg-primary border-secondary text-light text-center mb-3 d-inline w-75"
             name="login"
             placeholder="Password"
           />
-          <input type="submit" className="fadeIn fourth" value="Log In" />
+          <input
+            type="submit"
+            className="fadeIn fourth mb-0 mr-0 p-2 mb-3 text-success rounded-pill"
+            value="Log In"
+            style={{ backgroundColor: "#1f6153", width: "250px" }}
+          />
         </Form>
+        <Row className="justify-content-center">
+          <p id="register" className="text-secondary">
+            Register
+          </p>
+        </Row>
 
-        <div id="formFooter">
-          <a className="underlineHover" href="#">
+        <div className="rounded-bottom bg-light py-4">
+          <p id="anonymous" className="underlineHover m-0 text-primary">
             Connect as Anonymous
-          </a>
+          </p>
         </div>
       </div>
     </Row>
