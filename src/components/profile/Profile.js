@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { userUpdate } from "../../apiRoutes/userRoutes";
+import { userUpdate, deleteAccount } from "../../apiRoutes/userRoutes";
 
 import { Container, Row, Col, Form } from "react-bootstrap";
 import Image from "react-bootstrap/Image";
@@ -11,7 +11,7 @@ import profileImage from "../images/florian.png";
 function Profile(props) {
   const [nameChange, setNameChange] = useState("");
   const [editStatus, setEditStatus] = useState(false);
-  const options = props.axiosOptions;
+  const axiosOptions = props.axiosOptions;
 
   const onClickEdit = () => {
     setEditStatus(!editStatus);
@@ -20,8 +20,13 @@ function Profile(props) {
   const onClickConfirm = () => {
     if (nameChange && props.username !== nameChange) {
       props.onChange(nameChange);
-      userUpdate({ username: nameChange }, options);
+      userUpdate({ username: nameChange }, axiosOptions);
     }
+  };
+
+  const handleDeleteAccount = () => {
+    deleteAccount(axiosOptions);
+    props.onDeleteAccount();
   };
 
   return (
@@ -97,6 +102,7 @@ function Profile(props) {
         <p
           className="pillbutton mb-0 mr-0 p-2 text-warning rounded-pill text-center"
           style={{ backgroundColor: "#773f3f", width: "250px" }}
+          onClick={handleDeleteAccount}
         >
           Delete Account
         </p>

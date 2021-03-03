@@ -43,6 +43,7 @@ function App() {
             disconnectAll(axiosOptions);
             disconnect();
           }}
+          onDeleteAccount={disconnect}
         />
       );
     }

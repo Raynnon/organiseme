@@ -49,3 +49,11 @@ export const disconnectAll = async (options) => {
     console.log(e);
   }
 };
+
+export const deleteAccount = async (options) => {
+  try {
+    await axios.delete(url + "me", options);
+  } catch (e) {
+    console.log(e);
+  }
+};
