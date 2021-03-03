@@ -14,11 +14,7 @@ function Profile(props) {
   const options = props.axiosOptions;
 
   const onClickEdit = () => {
-    setEditStatus((prevEditStatus) => !prevEditStatus);
-  };
-
-  const handleChangeName = (e) => {
-    setNameChange(e.target.value);
+    setEditStatus(!editStatus);
   };
 
   const onClickConfirm = () => {
@@ -49,7 +45,7 @@ function Profile(props) {
                   className="bg-primary border-secondary text-light"
                   id="inputTask"
                   placeholder={props.username}
-                  onChange={handleChangeName}
+                  onChange={(e) => setNameChange(e.target.value)}
                 />
               )}
             </Col>
@@ -66,7 +62,7 @@ function Profile(props) {
                 <p
                   className="edit text-secondary mb-0"
                   onClick={() => {
-                    onClickEdit();
+                    setEditStatus(!editStatus);
                     onClickConfirm();
                   }}
                 >
@@ -80,16 +76,18 @@ function Profile(props) {
       <Row className="text-center">
         <Col xs={12} md={6} className="d-flex justify-content-center">
           <p
-            className="mb-0 mr-0 p-2 mb-5 text-success rounded-pill"
+            className="pillbutton mb-0 mr-0 p-2 mb-5 text-success rounded-pill"
             style={{ backgroundColor: "#1f6153", width: "250px" }}
+            onClick={() => props.onDisconnect()}
           >
             Disconnect
           </p>
         </Col>
         <Col className="d-flex justify-content-center" xs={12} md={6}>
           <p
-            className="mb-0 mr-0 p-2 mb-5 text-info rounded-pill"
+            className="pillbutton mb-0 mr-0 p-2 mb-5 text-info rounded-pill"
             style={{ backgroundColor: "#4a3f77", width: "250px" }}
+            onClick={() => props.onDisconnectAll()}
           >
             Disconnect from all devices
           </p>
@@ -97,7 +95,7 @@ function Profile(props) {
       </Row>
       <Row className="justify-content-center">
         <p
-          className="mb-0 mr-0 p-2 text-warning rounded-pill text-center"
+          className="pillbutton mb-0 mr-0 p-2 text-warning rounded-pill text-center"
           style={{ backgroundColor: "#773f3f", width: "250px" }}
         >
           Delete Account

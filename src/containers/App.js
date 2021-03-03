@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { disconnectAll } from "../apiRoutes/userRoutes";
 import "./App.scss";
 
 import { Container, Row, Col } from "react-bootstrap";
-import { userLogin } from "../apiRoutes/userRoutes";
 
 import Login from "../components/login/Login";
 import Menu from "../components/menu/Menu";
@@ -14,47 +14,44 @@ function App() {
   const [username, setUsername] = useState("");
   const [axiosOptions, setAxiosOptions] = useState({});
   const [activeElement, setActiveElement] = useState("List");
-  const [loggedIn, setLoggedIn] = useState(false);
 
-  useEffect(() => {
-    const login = async () => {
-      const data = await userLogin("test@gmail.com", "testtest");
-      setToken(data.token);
-      setUsername(data.name);
-      setAxiosOptions(data.options);
-    };
-
-    login();
-  }, []);
-
-  const handleChange = (active) => {
-    setActiveElement(active);
+  const newCredential = (token, name, options) => {
+    setToken(token);
+    setUsername(name);
+    setAxiosOptions(options);
   };
 
-  const handleChangeName = (newUsername) => {
-    setUsername(newUsername);
+  const disconnect = () => {
+    setToken("");
+    setActiveElement("List");
   };
 
-  let element;
-  if (activeElement === "List") {
-    element = (
-      <List token={token} username={username} axiosOptions={axiosOptions} />
-    );
-  } else if (activeElement === "Profile") {
-    element = (
-      <Profile
-        token={token}
-        username={username}
-        axiosOptions={axiosOptions}
-        onChange={handleChangeName}
-      />
-    );
-  }
+  const element = () => {
+    if (activeElement === "List") {
+      return (
+        <List token={token} username={username} axiosOptions={axiosOptions} />
+      );
+    } else if (activeElement === "Profile") {
+      return (
+        <Profile
+          token={token}
+          username={username}
+          axiosOptions={axiosOptions}
+          onChange={(newUsername) => setUsername(newUsername)}
+          onDisconnect={disconnect}
+          onDisconnectAll={() => {
+            disconnectAll(axiosOptions);
+            disconnect();
+          }}
+        />
+      );
+    }
+  };
 
   return (
     <Container fluid className="App bg-dark">
-      {!loggedIn ? (
-        <Login />
+      {!token ? (
+        <Login onNewCredentials={newCredential} />
       ) : (
         <Row>
           <Col
@@ -63,10 +60,13 @@ function App() {
             as="nav"
             className="border-right border-secondary menu-border text-center pt-5 px-0"
           >
-            <Menu activeElement={activeElement} onChange={handleChange} />
+            <Menu
+              activeElement={activeElement}
+              onChange={(active) => setActiveElement(active)}
+            />
           </Col>
           <Col xs={10} md={11} as="main">
-            {element}
+            {element()}
           </Col>
         </Row>
       )}

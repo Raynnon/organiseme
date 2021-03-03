@@ -39,7 +39,7 @@ function Profile(props) {
     setTasksInProgress(inProgress);
 
     let percentage = Math.round((completed / tasks.length) * 100);
-    isNaN(percentage) ? setPercentage("") : setPercentage(percentage);
+    isNaN(percentage) ? setPercentage("") : setPercentage(percentage + "%");
   }, [tasks]);
 
   const handleAddTaskName = (e) => {
@@ -108,7 +108,7 @@ function Profile(props) {
                 left: 0,
               }}
             >
-              {percentage + "%"}
+              {percentage}
             </h2>
           </Row>
         </Col>

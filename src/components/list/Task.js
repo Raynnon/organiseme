@@ -25,7 +25,7 @@ function Task(props) {
           src={checkImage}
           alt="checkbox"
           id="check"
-          className={props.completed ? "activated" : ""}
+          className={props.completed ? "check activated" : "check"}
           style={{ width: "23px" }}
           onClick={() => handleClickUpdate()}
         />

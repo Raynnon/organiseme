@@ -1,12 +1,23 @@
 import React, { useState } from "react";
-import { userUpdate } from "../../apiRoutes/userRoutes";
+import { userLogin } from "../../apiRoutes/userRoutes";
 
-import { Image, Row, Col, Form } from "react-bootstrap";
+import { Image, Row, Form } from "react-bootstrap";
 
 import "./login.css";
 import logo from "../images/logo.png";
 
 function Profile(props) {
+  const [isLogin, setIsLogin] = useState(true);
+
+  const login = async (e) => {
+    e.preventDefault();
+    if (isLogin) {
+      const data = await userLogin("test@gmail.com", "testtest");
+      props.onNewCredentials(data.token, data.name, data.options);
+      console.log(data.token, data.name, data.options);
+    }
+  };
+
   return (
     <Row className="fadeInDown flex-direction-column justify-content-center align-items-center p-5 h-100">
       <div id="formContent" className="bg-primary rounded shadow text-center">
@@ -14,7 +25,7 @@ function Profile(props) {
           <Image src={logo} id="icon" alt="User Icon" />
         </div>
 
-        <Form>
+        <Form onSubmit={(e) => login(e)}>
           <Form.Control
             type="text"
             id="login"
@@ -29,16 +40,21 @@ function Profile(props) {
             name="login"
             placeholder="Password"
           />
+
           <input
             type="submit"
-            className="fadeIn fourth mb-0 mr-0 p-2 mb-3 text-success rounded-pill"
-            value="Log In"
+            className="pillbutton fadeIn fourth mb-0 mr-0 p-2 mb-3 text-success rounded-pill"
+            value={isLogin ? "Log In" : "Register"}
             style={{ backgroundColor: "#1f6153", width: "250px" }}
           />
         </Form>
         <Row className="justify-content-center">
-          <p id="register" className="text-secondary">
-            Register
+          <p
+            id="register"
+            className="text-secondary"
+            onClick={() => setIsLogin(!isLogin)}
+          >
+            {isLogin ? "Register" : "Login"}
           </p>
         </Row>
 

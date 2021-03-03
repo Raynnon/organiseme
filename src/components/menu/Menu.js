@@ -1,5 +1,5 @@
 import React from "react";
-import "./menu.scss";
+import "./menu.css";
 
 import Image from "react-bootstrap/Image";
 

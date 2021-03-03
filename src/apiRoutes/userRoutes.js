@@ -26,7 +26,6 @@ export const userLogin = async (email, password) => {
 };
 
 export const userUpdate = async (data, options) => {
-  console.log(data);
   if (data.username) {
     try {
       await axios.patch(
@@ -40,5 +39,13 @@ export const userUpdate = async (data, options) => {
       console.log(e);
     }
   } else if (data.password) {
+  }
+};
+
+export const disconnectAll = async (options) => {
+  try {
+    await axios.post(url + "logoutAll", {}, options);
+  } catch (e) {
+    console.log(e);
   }
 };
