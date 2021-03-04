@@ -27,6 +27,7 @@ export const userLogin = async (email, password) => {
 
 export const userRegister = async (name, email, password) => {
   try {
+    console.log(name, email, password);
     const register = await axios.post(url, {
       name,
       email,

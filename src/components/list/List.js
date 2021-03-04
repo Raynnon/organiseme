@@ -12,7 +12,7 @@ import Pie from "./Pie";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import Image from "react-bootstrap/Image";
 
-import profileImage from "../images/florian.png";
+import profileImage from "../images/profil-picture-anonymous.png";
 
 function Profile(props) {
   const [tasks, setTasks] = useState([]);

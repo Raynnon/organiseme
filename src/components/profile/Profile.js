@@ -6,7 +6,7 @@ import Image from "react-bootstrap/Image";
 
 import "./profile.css";
 
-import profileImage from "../images/florian.png";
+import profileImage from "../images/profil-picture-anonymous.png";
 
 function Profile(props) {
   const [nameChange, setNameChange] = useState("");
@@ -58,7 +58,7 @@ function Profile(props) {
               {!editStatus ? (
                 <p
                   className="edit text-secondary mb-0"
-                  onClick={setEditStatus(!editStatus)}
+                  onClick={() => setEditStatus(!editStatus)}
                 >
                   Edit
                 </p>

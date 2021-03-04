@@ -14,13 +14,24 @@ function Profile(props) {
 
   const login = async (e) => {
     e.preventDefault();
-    if (isLogin) {
-      const data = await userLogin("test@gmail.com", "testtest");
-      props.onNewCredentials(data.token, data.name, data.options);
+
+    let data = "";
+
+    if (e.target.id === "anonymous") {
+      data = await userRegister(
+        "Anonymous",
+        "anonymous" + Math.random() * 100 + "@anonymous.com",
+        "anonymouspassword"
+      );
     } else {
-      const data = await userRegister(name, email, password);
-      props.onNewCredentials(data.token, data.name, data.options);
+      if (isLogin) {
+        data = await userLogin("test@gmail.com", "testtest");
+      } else {
+        data = await userRegister(name, email, password);
+      }
     }
+
+    props.onNewCredentials(data.token, data.name, data.options);
   };
 
   const handleChange = (e) => {
@@ -92,7 +103,11 @@ function Profile(props) {
         </Row>
 
         <div className="rounded-bottom bg-light py-4">
-          <p id="anonymous" className="underlineHover m-0 text-primary">
+          <p
+            id="anonymous"
+            className="underlineHover m-0 text-primary"
+            onClick={(e) => login(e)}
+          >
             Connect as Anonymous
           </p>
         </div>
