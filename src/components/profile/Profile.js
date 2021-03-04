@@ -13,10 +13,6 @@ function Profile(props) {
   const [editStatus, setEditStatus] = useState(false);
   const axiosOptions = props.axiosOptions;
 
-  const onClickEdit = () => {
-    setEditStatus(!editStatus);
-  };
-
   const onClickConfirm = () => {
     if (nameChange && props.username !== nameChange) {
       props.onChange(nameChange);
@@ -60,7 +56,10 @@ function Profile(props) {
               className="my-auto"
             >
               {!editStatus ? (
-                <p className="edit text-secondary mb-0" onClick={onClickEdit}>
+                <p
+                  className="edit text-secondary mb-0"
+                  onClick={setEditStatus(!editStatus)}
+                >
                   Edit
                 </p>
               ) : (

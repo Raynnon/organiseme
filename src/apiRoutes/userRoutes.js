@@ -25,6 +25,23 @@ export const userLogin = async (email, password) => {
   }
 };
 
+export const userRegister = async (name, email, password) => {
+  try {
+    console.log(name, email, password);
+    /*await axios.post(
+      url,
+      {
+        name: data.username,
+        email: data.email,
+        password: data.password,
+      },
+      options
+    );*/
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 export const userUpdate = async (data, options) => {
   if (data.username) {
     try {
