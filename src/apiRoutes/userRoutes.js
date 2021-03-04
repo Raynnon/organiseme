@@ -27,16 +27,20 @@ export const userLogin = async (email, password) => {
 
 export const userRegister = async (name, email, password) => {
   try {
-    console.log(name, email, password);
-    /*await axios.post(
-      url,
-      {
-        name: data.username,
-        email: data.email,
-        password: data.password,
-      },
-      options
-    );*/
+    const register = await axios.post(url, {
+      name,
+      email,
+      password,
+    });
+
+    token = register.data.token;
+    name = register.data.user.name;
+
+    options = {
+      headers: { Authorization: "Bearer " + token },
+    };
+
+    return { token, name, options };
   } catch (e) {
     console.log(e);
   }

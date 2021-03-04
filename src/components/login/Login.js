@@ -17,7 +17,9 @@ function Profile(props) {
     if (isLogin) {
       const data = await userLogin("test@gmail.com", "testtest");
       props.onNewCredentials(data.token, data.name, data.options);
-      console.log(data.token, data.name, data.options);
+    } else {
+      const data = await userRegister(name, email, password);
+      props.onNewCredentials(data.token, data.name, data.options);
     }
   };
 
@@ -37,11 +39,6 @@ function Profile(props) {
     }
   };
 
-  const onRegister = (e) => {
-    e.preventDefault();
-    userRegister(name, email, password);
-  };
-
   return (
     <Row className="fadeInDown flex-direction-column justify-content-center align-items-center p-5 h-100">
       <div id="formContent" className="bg-primary rounded shadow text-center">
@@ -49,11 +46,7 @@ function Profile(props) {
           <Image src={logo} id="icon" alt="User Icon" />
         </div>
 
-        <Form
-          onSubmit={(e) => {
-            isLogin ? login(e) : onRegister(e);
-          }}
-        >
+        <Form onSubmit={(e) => login(e)}>
           {!isLogin ? (
             <Form.Control
               type="text"
