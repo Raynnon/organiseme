@@ -13,14 +13,14 @@ import Profile from "../components/profile/Profile";
 function App() {
   const [activeElement, setActiveElement] = useState("List");
   const [name, setName] = useState("");
-  const [options, setOptions] = useState("");
+  const [token, setToken] = useState("");
 
   useEffect(() => {
-    readProfile().then((name) => console.log(name));
+    readProfile().then((name) => setName(name));
   }, []);
 
   useEffect(() => {
-    setOptions(CookieManager());
+    setToken(CookieManager());
   }, [name]);
 
   const onNewName = (newName) => {
@@ -29,7 +29,7 @@ function App() {
 
   const disconnect = () => {
     CookieManager("delete");
-    setOptions(CookieManager());
+    setToken(CookieManager());
     setName(undefined);
     setActiveElement("List");
   };
@@ -55,7 +55,7 @@ function App() {
 
   return (
     <Container fluid className="App bg-dark">
-      {!options ? (
+      {!token ? (
         <Login onNewName={onNewName} />
       ) : (
         <Row>

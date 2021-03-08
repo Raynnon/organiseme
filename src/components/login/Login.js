@@ -54,7 +54,7 @@ function Profile(props) {
     <Row className="fadeInDown flex-direction-column justify-content-center align-items-center p-5 h-100">
       <div id="formContent" className="bg-primary rounded shadow text-center">
         <div className="fadeIn first">
-          <Image src={logo} id="icon" alt="User Icon" />
+          <Image src={logo} id="icon" alt="organise-me-logo" />
         </div>
 
         <Form onSubmit={(e) => login(e)}>

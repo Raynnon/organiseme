@@ -1,35 +1,24 @@
-import axios from "axios";
-import CookieManager from "../apiRoutes/cookieManager";
-
-const url = "http://localhost:4000/tasks";
+import axiosInstance from "../apiRoutes/axiosInstance";
 
 export const getTasks = async () => {
-  const tasks = await axios.get(url, CookieManager());
+  const tasks = await axiosInstance("tasks").get("/");
 
   return tasks.data;
 };
 
 export const addTasks = async (taskName) => {
-  await axios.post(
-    url,
-    {
-      description: taskName,
-      completed: false,
-    },
-    CookieManager()
-  );
+  await axiosInstance("tasks").post("/", {
+    description: taskName,
+    completed: false,
+  });
 };
 
 export const updateTasks = async (id, completed) => {
-  axios.patch(
-    url + "/" + id,
-    {
-      completed,
-    },
-    CookieManager()
-  );
+  axiosInstance("tasks").patch("/" + id, {
+    completed,
+  });
 };
 
 export const deleteTasks = async (id) => {
-  axios.delete(url + "/" + id, CookieManager());
+  axiosInstance("tasks").delete("/" + id);
 };

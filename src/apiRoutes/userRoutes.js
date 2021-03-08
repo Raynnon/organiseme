@@ -1,11 +1,9 @@
-import axios from "axios";
 import CookieManager from "./cookieManager";
-
-const url = "http://localhost:4000/users/";
+import axiosInstance from "../apiRoutes/axiosInstance";
 
 export const userLogin = async (email, password) => {
   try {
-    const login = await axios.post(url + "login", {
+    const login = await axiosInstance("user").post("/login", {
       email: email,
       password: password,
     });
@@ -21,7 +19,7 @@ export const userLogin = async (email, password) => {
 
 export const userRegister = async (name, email, password) => {
   try {
-    const register = await axios.post(url, {
+    const register = await axiosInstance("user").post("/", {
       name,
       email,
       password,
@@ -37,11 +35,10 @@ export const userRegister = async (name, email, password) => {
   }
 };
 
-export const readProfile = async (options) => {
+export const readProfile = async () => {
   try {
-    const data = await axios.get(url + "me", CookieManager());
-
-    return data.name;
+    const data = await axiosInstance("user").get("/me");
+    return data.data.name;
   } catch (e) {
     console.log(e);
   }
@@ -49,13 +46,9 @@ export const readProfile = async (options) => {
 
 export const userUpdate = async (name) => {
   try {
-    await axios.patch(
-      url + "me",
-      {
-        name,
-      },
-      CookieManager()
-    );
+    await axiosInstance("user").patch("/me", {
+      name,
+    });
   } catch (e) {
     console.log(e);
   }
@@ -63,7 +56,7 @@ export const userUpdate = async (name) => {
 
 export const disconnectAll = async () => {
   try {
-    await axios.post(url + "logoutAll", {}, CookieManager());
+    await axiosInstance("user").post("/logoutAll");
   } catch (e) {
     console.log(e);
   }
@@ -71,7 +64,7 @@ export const disconnectAll = async () => {
 
 export const deleteAccount = async () => {
   try {
-    await axios.delete(url + "me", CookieManager());
+    await axiosInstance("user").delete("/me");
     CookieManager("");
   } catch (e) {
     console.log(e);
