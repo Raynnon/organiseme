@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { userLogin, userRegister } from "../../apiRoutes/userRoutes";
+import { userLogin, userRegister } from "../../apiRoutes/UserRoutes";
 
 import { Image, Row, Form } from "react-bootstrap";
 
@@ -30,8 +30,8 @@ function Profile(props) {
         data = await userRegister(name, email, password);
       }
     }
-
-    props.onNewCredentials(data.token, data.name, data.options);
+    console.log(data);
+    props.onNewName(data);
   };
 
   const handleChange = (e) => {

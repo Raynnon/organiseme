@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { userUpdate, deleteAccount } from "../../apiRoutes/userRoutes";
+import { userUpdate, deleteAccount } from "../../apiRoutes/UserRoutes";
 
 import { Container, Row, Col, Form } from "react-bootstrap";
 import Image from "react-bootstrap/Image";
@@ -11,17 +11,16 @@ import profileImage from "../images/profil-picture-anonymous.png";
 function Profile(props) {
   const [nameChange, setNameChange] = useState("");
   const [editStatus, setEditStatus] = useState(false);
-  const axiosOptions = props.axiosOptions;
 
   const onClickConfirm = () => {
-    if (nameChange && props.username !== nameChange) {
-      props.onChange(nameChange);
-      userUpdate({ username: nameChange }, axiosOptions);
+    if (nameChange && props.name !== nameChange) {
+      props.onNewName(nameChange);
+      userUpdate(nameChange);
     }
   };
 
   const handleDeleteAccount = () => {
-    deleteAccount(axiosOptions);
+    deleteAccount();
     props.onDeleteAccount();
   };
 
@@ -30,7 +29,7 @@ function Profile(props) {
       <Row className="mb-5">
         <Col xs={12} md={6}>
           <Image
-            className="py-5 mx-auto d-block"
+            className="my-5 mx-auto d-block rounded-circle bg-secondary"
             src={profileImage}
             alt="profile-image"
             style={{ width: "150px" }}
@@ -40,12 +39,12 @@ function Profile(props) {
           <Row>
             <Col xs={12} md={{ span: "4", offset: "2" }}>
               {!editStatus ? (
-                <h2 className="text-white text-center">{props.username}</h2>
+                <h2 className="text-white text-center">{props.name}</h2>
               ) : (
                 <Form.Control
                   className="bg-primary border-secondary text-light"
                   id="inputTask"
-                  placeholder={props.username}
+                  placeholder={props.name}
                   onChange={(e) => setNameChange(e.target.value)}
                 />
               )}

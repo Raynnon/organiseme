@@ -21,14 +21,11 @@ function Profile(props) {
   const [tasksInProgress, setTasksInProgress] = useState(0);
   const [percentage, setPercentage] = useState(0);
 
-  const token = props.token;
-  const axiosOptions = props.axiosOptions;
-
   useEffect(() => {
-    getTasks(axiosOptions).then((newTasks) => {
+    getTasks().then((newTasks) => {
       setTasks(newTasks);
     });
-  }, [axiosOptions]);
+  }, []);
 
   // Reasign tasks completion
   useEffect(() => {
@@ -49,9 +46,7 @@ function Profile(props) {
   // ADD TASK
   const handleAddTask = (e) => {
     e.preventDefault();
-    addTasks(taskName, axiosOptions).then(
-      getTasks(axiosOptions).then((newTasks) => setTasks(newTasks))
-    );
+    addTasks(taskName).then(getTasks().then((newTasks) => setTasks(newTasks)));
 
     e.target.inputTask.value = "";
     setTaskName("");
@@ -68,7 +63,7 @@ function Profile(props) {
       })
     );
 
-    updateTasks(id, completed, axiosOptions);
+    updateTasks(id, completed);
   };
 
   // DELETE TASK
@@ -76,7 +71,7 @@ function Profile(props) {
     const newTasks = tasks.filter((task) => task._id !== id);
     setTasks(newTasks);
 
-    deleteTasks(id, axiosOptions);
+    deleteTasks(id);
   };
 
   return (
@@ -84,14 +79,14 @@ function Profile(props) {
       <Row className="bg-primary rounded mb-5">
         <Col xs={12} md={3}>
           <Image
-            className="py-5 mx-auto d-block"
+            className="my-5 mx-auto d-block rounded-circle bg-secondary"
             src={profileImage}
             alt="profile-image"
             style={{ width: "150px" }}
           />
         </Col>
         <Col className="text-center my-auto" xs={12} md={6}>
-          <h2 className="text-white">{props.username}</h2>
+          <h2 className="text-white">{props.name}</h2>
           <p className="text-secondary">
             Hello, you have {tasksInProgress} tasks to achieve!
           </p>
@@ -145,10 +140,8 @@ function Profile(props) {
                   id={task._id}
                   completed={task.completed}
                   taskName={task.description}
-                  token={token}
                   onUpdate={handleUpdate}
                   onDelete={handleDelete}
-                  axiosOptions={axiosOptions}
                 />
               );
             })

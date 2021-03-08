@@ -1,9 +1,7 @@
 import axios from "axios";
+import CookieManager from "./cookieManager";
 
 const url = "http://localhost:4000/users/";
-let token = "";
-let name = "";
-let options = {};
 
 export const userLogin = async (email, password) => {
   try {
@@ -12,14 +10,10 @@ export const userLogin = async (email, password) => {
       password: password,
     });
 
-    token = await login.data.token;
-    name = await login.data.user.name;
+    CookieManager(await login.data.token);
+    const name = login.data.user.name;
 
-    options = {
-      headers: { Authorization: "Bearer " + token },
-    };
-
-    return { token, name, options };
+    return name;
   } catch (e) {
     console.log(e);
   }
@@ -27,54 +21,58 @@ export const userLogin = async (email, password) => {
 
 export const userRegister = async (name, email, password) => {
   try {
-    console.log(name, email, password);
     const register = await axios.post(url, {
       name,
       email,
       password,
     });
 
-    token = register.data.token;
-    name = register.data.user.name;
+    CookieManager(await register.data.token);
 
-    options = {
-      headers: { Authorization: "Bearer " + token },
-    };
+    const newName = register.data.user.name;
 
-    return { token, name, options };
+    return newName;
   } catch (e) {
     console.log(e);
   }
 };
 
-export const userUpdate = async (data, options) => {
-  if (data.username) {
-    try {
-      await axios.patch(
-        url + "me",
-        {
-          name: data.username,
-        },
-        options
-      );
-    } catch (e) {
-      console.log(e);
-    }
-  } else if (data.password) {
-  }
-};
-
-export const disconnectAll = async (options) => {
+export const readProfile = async (options) => {
   try {
-    await axios.post(url + "logoutAll", {}, options);
+    const data = await axios.get(url + "me", CookieManager());
+
+    return data.name;
   } catch (e) {
     console.log(e);
   }
 };
 
-export const deleteAccount = async (options) => {
+export const userUpdate = async (name) => {
   try {
-    await axios.delete(url + "me", options);
+    await axios.patch(
+      url + "me",
+      {
+        name,
+      },
+      CookieManager()
+    );
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const disconnectAll = async () => {
+  try {
+    await axios.post(url + "logoutAll", {}, CookieManager());
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const deleteAccount = async () => {
+  try {
+    await axios.delete(url + "me", CookieManager());
+    CookieManager("");
   } catch (e) {
     console.log(e);
   }

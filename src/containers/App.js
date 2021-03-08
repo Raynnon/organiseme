@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { disconnectAll } from "../apiRoutes/userRoutes";
+import React, { useState, useEffect } from "react";
+import { disconnectAll, readProfile } from "../apiRoutes/UserRoutes";
 import "./App.scss";
+import CookieManager from "../apiRoutes/cookieManager";
 
 import { Container, Row, Col } from "react-bootstrap";
 
@@ -10,37 +11,40 @@ import List from "../components/list/List";
 import Profile from "../components/profile/Profile";
 
 function App() {
-  const [token, setToken] = useState("");
-  const [username, setUsername] = useState("");
-  const [axiosOptions, setAxiosOptions] = useState({});
   const [activeElement, setActiveElement] = useState("List");
+  const [name, setName] = useState("");
+  const [options, setOptions] = useState("");
 
-  const newCredential = (token, name, options) => {
-    setToken(token);
-    setUsername(name);
-    setAxiosOptions(options);
+  useEffect(() => {
+    readProfile().then((name) => console.log(name));
+  }, []);
+
+  useEffect(() => {
+    setOptions(CookieManager());
+  }, [name]);
+
+  const onNewName = (newName) => {
+    setName(newName);
   };
 
   const disconnect = () => {
-    setToken("");
+    CookieManager("delete");
+    setOptions(CookieManager());
+    setName(undefined);
     setActiveElement("List");
   };
 
   const element = () => {
     if (activeElement === "List") {
-      return (
-        <List token={token} username={username} axiosOptions={axiosOptions} />
-      );
+      return <List name={name} />;
     } else if (activeElement === "Profile") {
       return (
         <Profile
-          token={token}
-          username={username}
-          axiosOptions={axiosOptions}
-          onChange={(newUsername) => setUsername(newUsername)}
+          name={name}
+          onNewName={onNewName}
           onDisconnect={disconnect}
           onDisconnectAll={() => {
-            disconnectAll(axiosOptions);
+            disconnectAll();
             disconnect();
           }}
           onDeleteAccount={disconnect}
@@ -51,8 +55,8 @@ function App() {
 
   return (
     <Container fluid className="App bg-dark">
-      {!token ? (
-        <Login onNewCredentials={newCredential} />
+      {!options ? (
+        <Login onNewName={onNewName} />
       ) : (
         <Row>
           <Col
