@@ -30,10 +30,10 @@ function Task(props) {
           onClick={() => handleClickUpdate()}
         />
       </Col>
-      <Col xs={12} sm={5}>
+      <Col xs={12} sm={8}>
         <p className="mb-0">{taskName}</p>
       </Col>
-      <Col xs={12} sm={5} className="d-flex justify-content-center">
+      <Col xs={12} sm={2} className="d-flex justify-content-center">
         {props.completed ? (
           <p
             className="mb-0 mr-0 p-2 text-success rounded-pill"

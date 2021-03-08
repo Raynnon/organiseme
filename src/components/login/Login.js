@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { userLogin, userRegister } from "../../apiRoutes/UserRoutes";
 
 import { Image, Row, Form } from "react-bootstrap";
@@ -11,6 +11,11 @@ function Profile(props) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    setErrorMessage("");
+  }, [isLogin]);
 
   const login = async (e) => {
     e.preventDefault();
@@ -25,13 +30,19 @@ function Profile(props) {
       );
     } else {
       if (isLogin) {
-        data = await userLogin("test@gmail.com", "testtest");
+        data = await userLogin(email, password);
+        console.log(data.error);
       } else {
         data = await userRegister(name, email, password);
       }
     }
-    console.log(data);
-    props.onNewName(data);
+
+    if (data.error) {
+      setErrorMessage(data.error);
+    } else {
+      setErrorMessage("");
+      props.onNewName(data);
+    }
   };
 
   const handleChange = (e) => {
@@ -81,10 +92,12 @@ function Profile(props) {
             id="password"
             className="fadeIn third bg-primary border-secondary text-light text-center mb-3 d-inline w-75"
             name="password"
-            placeholder="Password"
+            placeholder={isLogin ? "Password" : "Password (min. 6 chars)"}
             onChange={(e) => handleChange(e)}
           />
-
+          <p className="text-warning" style={{ height: "24px" }}>
+            {errorMessage}
+          </p>
           <input
             type="submit"
             className="pillbutton fadeIn fourth mb-0 mr-0 p-2 mb-3 text-success rounded-pill"
@@ -108,7 +121,7 @@ function Profile(props) {
             className="underlineHover m-0 text-primary"
             onClick={(e) => login(e)}
           >
-            Connect as Anonymous
+            Anonymous login
           </p>
         </div>
       </div>

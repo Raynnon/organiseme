@@ -13,7 +13,7 @@ export const userLogin = async (email, password) => {
 
     return name;
   } catch (e) {
-    console.log(e);
+    return { error: "Login Error : please check your credentials" };
   }
 };
 
@@ -31,7 +31,9 @@ export const userRegister = async (name, email, password) => {
 
     return newName;
   } catch (e) {
-    console.log(e);
+    return {
+      error: "Registration error : fill in all fields correctly.",
+    };
   }
 };
 
