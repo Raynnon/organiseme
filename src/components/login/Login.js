@@ -73,7 +73,7 @@ function Profile(props) {
             <Form.Control
               type="text"
               id="name"
-              className="bg-primary border-secondary text-light text-center mb-2 d-inline w-75"
+              className="bg-primary border-secondary text-light text-center mb-2 d-inline w-75 rounded-pill"
               name="name"
               placeholder="Name"
               onChange={(e) => handleChange(e)}
@@ -82,7 +82,7 @@ function Profile(props) {
           <Form.Control
             type="text"
             id="email"
-            className="fadeIn second bg-primary border-secondary text-light text-center mb-2 d-inline w-75"
+            className="fadeIn second bg-primary border-secondary text-light text-center mb-2 d-inline w-75 rounded-pill"
             name="email"
             placeholder="Email"
             onChange={(e) => handleChange(e)}
@@ -90,7 +90,7 @@ function Profile(props) {
           <Form.Control
             type="text"
             id="password"
-            className="fadeIn third bg-primary border-secondary text-light text-center mb-3 d-inline w-75"
+            className="fadeIn third bg-primary border-secondary text-light text-center mb-3 d-inline w-75 rounded-pill"
             name="password"
             placeholder={isLogin ? "Password" : "Password (min. 6 chars)"}
             onChange={(e) => handleChange(e)}
@@ -99,9 +99,8 @@ function Profile(props) {
             {errorMessage}
           </p>
           <input
-            id="formSubmit"
             type="submit"
-            className="pillbutton fadeIn fourth mb-3 mr-0 p-2 text-success rounded-pill"
+            className="buttonHover pillbutton fadeIn fourth mb-3 mr-0 p-2 text-success rounded-pill"
             value={isLogin ? "Log In" : "Register"}
             style={{ backgroundColor: "#1f6153", width: "250px" }}
           />

@@ -92,7 +92,8 @@ function Profile(props) {
         <Col className="text-center my-auto" xs={12} md={6}>
           <h2 className="text-white">{props.name}</h2>
           <p className="text-secondary">
-            Hello, you have {tasksInProgress} tasks to achieve!
+            Hello, you have {tasksInProgress}
+            {tasksCompleted === 1 ? " task" : " tasks"} to achieve!
           </p>
         </Col>
         <Col xs={12} md={3}>
@@ -122,7 +123,7 @@ function Profile(props) {
           <Form.Row className="justify-content-center align-items-center mb-3">
             <Col sm={3} className="my-1">
               <Form.Control
-                className="bg-primary border-secondary text-light"
+                className="bg-primary border-secondary text-light rounded-pill"
                 id="inputTask"
                 placeholder="New Task"
                 onChange={handleAddTaskName}

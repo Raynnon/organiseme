@@ -30,6 +30,10 @@ body {
   display: flex;
 }
 
+.buttonHover:hover {
+  transform: scale(1.04, 1.04);
+}
+
 .active {
   border-left: 3px solid #00cf6e;
 }

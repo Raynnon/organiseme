@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { userUpdate, deleteAccount } from "../../apiRoutes/UserRoutes";
+import "./profile.css";
 
 import { Container, Row, Col, Form } from "react-bootstrap";
 import Image from "react-bootstrap/Image";
 
-import "./profile.css";
+import { userUpdate, deleteAccount } from "../../apiRoutes/UserRoutes";
+import Buttons from "../subcomponents/Buttons";
 
 import profileImage from "../images/profil-picture-anonymous.png";
 
@@ -78,32 +79,29 @@ function Profile(props) {
       </Row>
       <Row className="text-center">
         <Col xs={12} md={6} className="d-flex justify-content-center">
-          <p
-            className="pillbutton mb-0 mr-0 p-2 mb-5 text-success rounded-pill"
-            style={{ backgroundColor: "#1f6153", width: "250px" }}
-            onClick={() => props.onDisconnect()}
-          >
-            Disconnect
-          </p>
+          <Buttons
+            bgColor={"#1f6153"}
+            textColor={"text-success"}
+            description={"Disconnect"}
+            handleClick={() => props.onDisconnect()}
+          />
         </Col>
         <Col className="d-flex justify-content-center" xs={12} md={6}>
-          <p
-            className="pillbutton mb-0 mr-0 p-2 mb-5 text-info rounded-pill"
-            style={{ backgroundColor: "#4a3f77", width: "250px" }}
-            onClick={() => props.onDisconnectAll()}
-          >
-            Disconnect from all devices
-          </p>
+          <Buttons
+            bgColor={"#4a3f77"}
+            textColor={"text-info"}
+            description={"Disconnect all devices"}
+            handleClick={() => props.onDisconnectAll()}
+          />
         </Col>
       </Row>
       <Row className="justify-content-center">
-        <p
-          className="pillbutton mb-0 mr-0 p-2 text-warning rounded-pill text-center"
-          style={{ backgroundColor: "#773f3f", width: "250px" }}
-          onClick={handleDeleteAccount}
-        >
-          Delete Account
-        </p>
+        <Buttons
+          bgColor={"#773f3f"}
+          textColor={"text-warning"}
+          description={"Delete account"}
+          handleClick={handleDeleteAccount}
+        />
       </Row>
     </Container>
   );
