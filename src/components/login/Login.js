@@ -99,8 +99,9 @@ function Profile(props) {
             {errorMessage}
           </p>
           <input
+            id="formSubmit"
             type="submit"
-            className="pillbutton fadeIn fourth mb-0 mr-0 p-2 mb-3 text-success rounded-pill"
+            className="pillbutton fadeIn fourth mb-3 mr-0 p-2 text-success rounded-pill"
             value={isLogin ? "Log In" : "Register"}
             style={{ backgroundColor: "#1f6153", width: "250px" }}
           />

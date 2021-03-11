@@ -1,4 +1,7 @@
-/* STRUCTURE */
+#formSubmit:hover {
+  transform: scale(1.04, 1.04);
+}
+
 #formContent {
   max-width: 450px;
 }
@@ -12,8 +15,6 @@
   width: 40%;
 }
 
-/* FORM TYPOGRAPHY*/
-
 input[type="button"],
 input[type="submit"],
 input[type="reset"] {
@@ -26,7 +27,6 @@ input[type="reset"] {
   transition: all 0.3s ease-in-out;
 }
 
-/* Simple CSS3 Fade-in-down Animation */
 .fadeInDown {
   -webkit-animation-name: fadeInDown;
   animation-name: fadeInDown;

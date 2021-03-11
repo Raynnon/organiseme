@@ -44,9 +44,13 @@ function Profile(props) {
   };
 
   // ADD TASK
-  const handleAddTask = (e) => {
+  const handleAddTask = async (e) => {
     e.preventDefault();
-    addTasks(taskName).then(getTasks().then((newTasks) => setTasks(newTasks)));
+    if (taskName) {
+      await addTasks(taskName);
+      const newTasks = await getTasks();
+      setTasks(newTasks);
+    }
 
     e.target.inputTask.value = "";
     setTaskName("");
