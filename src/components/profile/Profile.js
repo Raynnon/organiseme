@@ -78,7 +78,7 @@ function Profile(props) {
         </Col>
       </Row>
       <Row className="text-center">
-        <Col xs={12} md={6} className="d-flex justify-content-center">
+        <Col xs={12} className="d-flex justify-content-center">
           <Buttons
             bgColor={"#1f6153"}
             textColor={"text-success"}
@@ -86,7 +86,7 @@ function Profile(props) {
             handleClick={() => props.onDisconnect()}
           />
         </Col>
-        <Col className="d-flex justify-content-center" xs={12} md={6}>
+        <Col className="d-flex justify-content-center" xs={12}>
           <Buttons
             bgColor={"#4a3f77"}
             textColor={"text-info"}

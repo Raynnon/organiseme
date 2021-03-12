@@ -20,7 +20,7 @@ function Task(props) {
 
   return (
     <Row className="bg-primary rounded px-5 py-2 mb-3 align-items-center text-center">
-      <Col xs={12} sm={1}>
+      <Col xs={12} md={1} className="my-1">
         <Image
           src={checkImage}
           alt="checkbox"
@@ -30,10 +30,10 @@ function Task(props) {
           onClick={() => handleClickUpdate()}
         />
       </Col>
-      <Col xs={12} sm={8}>
+      <Col xs={12} md={7} className="mb-1">
         <p className="mb-0">{taskName}</p>
       </Col>
-      <Col xs={12} sm={2} className="d-flex justify-content-center">
+      <Col xs={12} md={3} className="d-flex justify-content-center">
         {props.completed ? (
           <p
             className="mb-0 mr-0 p-2 text-success rounded-pill"
@@ -50,7 +50,7 @@ function Task(props) {
           </p>
         )}
       </Col>
-      <Col xs={12} sm={1} className="d-flex justify-content-center">
+      <Col xs={12} md={1} className="d-flex justify-content-center">
         <p
           className="mb-0 mr-0 p-2 text-secondary delete"
           style={{ backgroundColor: "none" }}

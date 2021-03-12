@@ -121,7 +121,7 @@ function Profile(props) {
           onSubmit={(e) => handleAddTask(e)}
         >
           <Form.Row className="justify-content-center align-items-center mb-3">
-            <Col sm={3} className="my-1">
+            <Col xs={8} sm={6} md={5} lg={3} className="my-1">
               <Form.Control
                 className="bg-primary border-secondary text-light rounded-pill"
                 id="inputTask"
