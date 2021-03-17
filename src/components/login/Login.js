@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { userLogin, userRegister } from "../../apiRoutes/UserRoutes";
 
+import { useDispatch, useSelector } from "react-redux";
+import { setName } from "../../actions";
+
 import { Image, Row, Form } from "react-bootstrap";
 
 import "./login.css";
 import logo from "../images/logo.png";
 
-function Profile(props) {
+function Profile() {
+  const dispatch = useDispatch();
+
+  const name = useSelector((state) => state.user.name);
   const [isLogin, setIsLogin] = useState(true);
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -41,7 +46,7 @@ function Profile(props) {
       setErrorMessage(data.error);
     } else {
       setErrorMessage("");
-      props.onNewName(data);
+      dispatch(setName(data));
     }
   };
 

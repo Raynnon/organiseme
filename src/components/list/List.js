@@ -6,6 +6,8 @@ import {
   deleteTasks,
 } from "../../apiRoutes/tasksRoutes";
 
+import { useSelector } from "react-redux";
+
 import Task from "./Task";
 import Pie from "./Pie";
 
@@ -14,7 +16,8 @@ import Image from "react-bootstrap/Image";
 
 import profileImage from "../images/profil-picture-anonymous.png";
 
-function Profile(props) {
+function Profile() {
+  const name = useSelector((state) => state.user.name);
   const [tasks, setTasks] = useState([]);
   const [taskName, setTaskName] = useState("");
   const [tasksCompleted, setTasksCompleted] = useState(0);
@@ -90,7 +93,7 @@ function Profile(props) {
           />
         </Col>
         <Col className="text-center my-auto" xs={12} md={6}>
-          <h2 className="text-white">{props.name}</h2>
+          <h2 className="text-white">{name}</h2>
           <p className="text-secondary">
             Hello, you have {tasksInProgress}
             {tasksCompleted === 1 ? " task" : " tasks"} to achieve!

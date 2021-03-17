@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { disconnectAll, readProfile } from "../apiRoutes/UserRoutes";
+
+import { useSelector } from "react-redux";
+
 import "./App.scss";
 import CookieManager from "../apiRoutes/cookieManager";
 
@@ -11,52 +13,26 @@ import List from "../components/list/List";
 import Profile from "../components/profile/Profile";
 
 function App() {
+  const name = useSelector((state) => state.user.name);
   const [activeElement, setActiveElement] = useState("List");
-  const [name, setName] = useState("");
   const [token, setToken] = useState("");
-
-  useEffect(() => {
-    readProfile().then((name) => setName(name));
-  }, []);
 
   useEffect(() => {
     setToken(CookieManager());
   }, [name]);
 
-  const onNewName = (newName) => {
-    setName(newName);
-  };
-
-  const disconnect = () => {
-    CookieManager("delete");
-    setToken(CookieManager());
-    setName(undefined);
-    setActiveElement("List");
-  };
-
   const element = () => {
     if (activeElement === "List") {
-      return <List name={name} />;
+      return <List />;
     } else if (activeElement === "Profile") {
-      return (
-        <Profile
-          name={name}
-          onNewName={onNewName}
-          onDisconnect={disconnect}
-          onDisconnectAll={() => {
-            disconnectAll();
-            disconnect();
-          }}
-          onDeleteAccount={disconnect}
-        />
-      );
+      return <Profile onDisconnect={() => setActiveElement("List")} />;
     }
   };
 
   return (
     <Container fluid className="App bg-dark">
       {!token ? (
-        <Login onNewName={onNewName} />
+        <Login />
       ) : (
         <Row>
           <Col
