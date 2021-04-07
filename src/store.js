@@ -1,7 +1,7 @@
 import { combineReducers, createStore } from "redux";
-import { user } from "./reducers";
+import { user, profilePicture } from "./reducers";
 
-const rootReducer = combineReducers({ user });
+const rootReducer = combineReducers({ user, profilePicture });
 const store = createStore(rootReducer);
 
 export default store;

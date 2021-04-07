@@ -37,6 +37,27 @@ export const userRegister = async (name, email, password) => {
   }
 };
 
+export const uploadProfilePicture = async (image) => {
+  try {
+    return await axiosInstance("user").post("/me/upload-avatar", {
+      avatar: image,
+    });
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const readProfilePicture = async () => {
+  try {
+    const data = await axiosInstance("user", "blob").get("/me/avatar");
+    const src = URL.createObjectURL(data.data);
+
+    return src;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 export const readProfile = async () => {
   try {
     const data = await axiosInstance("user").get("/me");

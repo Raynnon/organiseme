@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import {
   getTasks,
   addTasks,
@@ -14,15 +15,16 @@ import Pie from "./Pie";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import Image from "react-bootstrap/Image";
 
-import profileImage from "../images/profil-picture-anonymous.png";
-
 function Profile() {
   const name = useSelector((state) => state.user.name);
+  const profilePicture = useSelector((state) => state.profilePicture.image);
   const [tasks, setTasks] = useState([]);
   const [taskName, setTaskName] = useState("");
   const [tasksCompleted, setTasksCompleted] = useState(0);
   const [tasksInProgress, setTasksInProgress] = useState(0);
   const [percentage, setPercentage] = useState(0);
+
+  console.log("TTEEEEST", name);
 
   useEffect(() => {
     getTasks().then((newTasks) => {
@@ -77,7 +79,6 @@ function Profile() {
   const handleDelete = (id) => {
     const newTasks = tasks.filter((task) => task._id !== id);
     setTasks(newTasks);
-
     deleteTasks(id);
   };
 
@@ -87,7 +88,7 @@ function Profile() {
         <Col xs={12} md={3}>
           <Image
             className="my-5 mx-auto d-block rounded-circle bg-secondary"
-            src={profileImage}
+            src={profilePicture}
             alt="profile-image"
             style={{ width: "150px" }}
           />
