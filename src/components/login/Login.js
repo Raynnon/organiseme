@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { userLogin, userRegister } from "../../apiRoutes/UserRoutes";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setName } from "../../actions";
 
 import { Image, Row, Form } from "react-bootstrap";
@@ -12,7 +12,7 @@ import logo from "../images/logo.png";
 function Profile() {
   const dispatch = useDispatch();
 
-  const name = useSelector((state) => state.user.name);
+  const [newName, setNewName] = useState("");
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -38,7 +38,7 @@ function Profile() {
         data = await userLogin(email, password);
         console.log(data.error);
       } else {
-        data = await userRegister(name, email, password);
+        data = await userRegister(newName, email, password);
       }
     }
 
@@ -53,7 +53,7 @@ function Profile() {
   const handleChange = (e) => {
     switch (e.target.id) {
       case "name":
-        setName(e.target.value);
+        setNewName(e.target.value);
         break;
       case "email":
         setEmail(e.target.value);

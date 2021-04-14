@@ -49,8 +49,8 @@ export const uploadProfilePicture = async (image) => {
 
 export const readProfilePicture = async () => {
   try {
-    const data = await axiosInstance("user", "blob").get("/me/avatar");
-    const src = URL.createObjectURL(data.data);
+    const res = await axiosInstance("user", "blob").get("/me/avatar");
+    const src = URL.createObjectURL(res.data);
 
     return src;
   } catch (e) {

@@ -1,11 +1,6 @@
 import { NAME, PROFILE_PICTURE } from "./constants";
-import { readProfile, readProfilePicture } from "./apiRoutes/UserRoutes";
 
-const userProfile = async () => {
-  return await readProfile();
-};
-
-const initialStateName = { name: userProfile };
+const initialStateName = { name: "" };
 
 export const user = (state = initialStateName, action) => {
   switch (action.type) {
@@ -16,11 +11,7 @@ export const user = (state = initialStateName, action) => {
   }
 };
 
-const imageProfile = async () => {
-  return await readProfilePicture();
-};
-
-const initialStateImage = { image: imageProfile() };
+const initialStateImage = { image: "" };
 
 export const profilePicture = (state = initialStateImage, action) => {
   switch (action.type) {

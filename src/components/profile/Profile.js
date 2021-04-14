@@ -14,13 +14,11 @@ import {
 } from "../../apiRoutes/UserRoutes";
 import CookieManager from "../../apiRoutes/cookieManager";
 import Buttons from "../subcomponents/Buttons";
-
-import profileImage from "../images/profil-picture-anonymous.png";
-
 function Profile(props) {
   const dispatch = useDispatch();
 
   const name = useSelector((state) => state.user.name);
+  const profilePicture = useSelector((state) => state.profilePicture.image);
   const [nameChange, setNameChange] = useState("");
   const [editStatus, setEditStatus] = useState(false);
 
@@ -49,7 +47,7 @@ function Profile(props) {
         <Col xs={12} md={6}>
           <Image
             className="my-5 mx-auto d-block rounded-circle bg-secondary"
-            src={profileImage}
+            src={profilePicture}
             alt="profile-image"
             style={{ width: "150px" }}
           />

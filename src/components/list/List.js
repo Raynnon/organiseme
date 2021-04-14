@@ -7,7 +7,11 @@ import {
   deleteTasks,
 } from "../../apiRoutes/tasksRoutes";
 
-import { useSelector } from "react-redux";
+import { readProfilePicture } from "../../apiRoutes/UserRoutes";
+
+import { useDispatch, useSelector } from "react-redux";
+
+import { setImage } from "../../actions";
 
 import Task from "./Task";
 import Pie from "./Pie";
@@ -16,6 +20,8 @@ import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import Image from "react-bootstrap/Image";
 
 function Profile() {
+  const dispatch = useDispatch();
+
   const name = useSelector((state) => state.user.name);
   const profilePicture = useSelector((state) => state.profilePicture.image);
   const [tasks, setTasks] = useState([]);
@@ -24,7 +30,15 @@ function Profile() {
   const [tasksInProgress, setTasksInProgress] = useState(0);
   const [percentage, setPercentage] = useState(0);
 
-  console.log("TTEEEEST", name);
+  useEffect(() => {
+    if (!profilePicture) {
+      const picture = async () => {
+        dispatch(setImage(await readProfilePicture()));
+      };
+
+      picture();
+    }
+  }, [dispatch, profilePicture]);
 
   useEffect(() => {
     getTasks().then((newTasks) => {
