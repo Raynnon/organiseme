@@ -38,7 +38,6 @@ function Profile(props) {
 
     CookieManager("delete");
     dispatch(setName(undefined));
-    props.onDisconnect();
   };
 
   return (

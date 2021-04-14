@@ -9,7 +9,7 @@ import { Image, Row, Form } from "react-bootstrap";
 import "./login.css";
 import logo from "../images/logo.png";
 
-function Profile() {
+function Profile(props) {
   const dispatch = useDispatch();
 
   const [newName, setNewName] = useState("");
@@ -26,6 +26,7 @@ function Profile() {
     e.preventDefault();
 
     let data = "";
+    props.loginIn();
 
     if (e.target.id === "anonymous") {
       data = await userRegister(
@@ -36,7 +37,6 @@ function Profile() {
     } else {
       if (isLogin) {
         data = await userLogin(email, password);
-        console.log(data.error);
       } else {
         data = await userRegister(newName, email, password);
       }

@@ -25,14 +25,14 @@ function App() {
     if (activeElement === "List") {
       return <List />;
     } else if (activeElement === "Profile") {
-      return <Profile onDisconnect={() => setActiveElement("List")} />;
+      return <Profile />;
     }
   };
 
   return (
     <Container fluid className="App bg-dark">
       {!token ? (
-        <Login />
+        <Login loginIn={() => setActiveElement("List")} />
       ) : (
         <Row>
           <Col
