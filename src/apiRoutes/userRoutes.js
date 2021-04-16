@@ -39,9 +39,10 @@ export const userRegister = async (name, email, password) => {
 
 export const uploadProfilePicture = async (image) => {
   try {
-    return await axiosInstance("user").post("/me/upload-avatar", {
-      avatar: image,
-    });
+    const data = new FormData();
+    data.append("avatar", image);
+
+    return await axiosInstance("user").post("/me/upload-avatar", data);
   } catch (e) {
     console.log(e);
   }

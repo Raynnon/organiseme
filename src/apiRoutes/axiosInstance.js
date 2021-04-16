@@ -7,23 +7,21 @@ const axiosInstance = (route, options) => {
   const token = CookieManager();
   let instance = "";
 
+  axios.defaults.headers.Authorization = "Bearer " + token;
   if (route === "user") {
     if (options === "blob") {
       instance = axios.create({
         baseURL: urlUser,
-        headers: { Authorization: "Bearer " + token },
         responseType: "blob",
       });
     } else {
       instance = axios.create({
         baseURL: urlUser,
-        headers: { Authorization: "Bearer " + token },
       });
     }
   } else if (route === "tasks") {
     instance = axios.create({
       baseURL: urlTasks,
-      headers: { Authorization: "Bearer " + token },
     });
   }
 

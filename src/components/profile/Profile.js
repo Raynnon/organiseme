@@ -4,17 +4,18 @@ import "./profile.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setName } from "../../actions";
 
-import { Container, Row, Col, Form } from "react-bootstrap";
+import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import Image from "react-bootstrap/Image";
 
 import {
   disconnectAll,
   userUpdate,
   deleteAccount,
+  uploadProfilePicture,
 } from "../../apiRoutes/UserRoutes";
 import CookieManager from "../../apiRoutes/cookieManager";
 import Buttons from "../subcomponents/Buttons";
-function Profile(props) {
+function Profile() {
   const dispatch = useDispatch();
 
   const name = useSelector((state) => state.user.name);
@@ -40,16 +41,30 @@ function Profile(props) {
     dispatch(setName(undefined));
   };
 
+  const handleChange = (e) => {
+    uploadProfilePicture(e.target.files[0]);
+  };
+
   return (
     <Container className="bg-primary rounded pb-5">
       <Row className="mb-5">
         <Col xs={12} md={6}>
-          <Image
-            className="my-5 mx-auto d-block rounded-circle bg-secondary"
-            src={profilePicture}
-            alt="profile-image"
-            style={{ width: "150px" }}
-          />
+          <Row>
+            <Image
+              className="my-5 mx-auto d-block rounded-circle bg-secondary"
+              src={profilePicture}
+              alt="profile-image"
+              style={{ width: "150px" }}
+            />
+            <Form className="d-flex align-items-center">
+              <Form.File
+                id="custom-file"
+                label="Change profile picture"
+                custom
+                onChange={handleChange}
+              />
+            </Form>
+          </Row>
         </Col>
         <Col className="my-auto" xs={12} md={6}>
           <Row>
