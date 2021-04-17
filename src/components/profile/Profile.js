@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import "./profile.css";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setName } from "../../actions";
+import { setName, setImage } from "../../actions";
 
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { Container, Row, Col, Form } from "react-bootstrap";
 import Image from "react-bootstrap/Image";
 
 import {
@@ -12,6 +12,7 @@ import {
   userUpdate,
   deleteAccount,
   uploadProfilePicture,
+  readProfilePicture,
 } from "../../apiRoutes/UserRoutes";
 import CookieManager from "../../apiRoutes/cookieManager";
 import Buttons from "../subcomponents/Buttons";
@@ -41,8 +42,9 @@ function Profile() {
     dispatch(setName(undefined));
   };
 
-  const handleChange = (e) => {
-    uploadProfilePicture(e.target.files[0]);
+  const handleChange = async (e) => {
+    await uploadProfilePicture(e.target.files[0]);
+    dispatch(setImage(await readProfilePicture()));
   };
 
   return (
@@ -57,12 +59,22 @@ function Profile() {
               style={{ width: "150px" }}
             />
             <Form className="d-flex align-items-center">
-              <Form.File
-                id="custom-file"
-                label="Change profile picture"
-                custom
-                onChange={handleChange}
-              />
+              <Form.Group className="m-0">
+                <label
+                  htmlFor="uploadAvatar"
+                  className="text-light btn btn-dark my-0 mx-3"
+                >
+                  Select new avatar
+                </label>
+                <Form.File
+                  id="uploadAvatar"
+                  onChange={handleChange}
+                  style={{
+                    position: "absolute",
+                    visibility: "hidden",
+                  }}
+                />
+              </Form.Group>
             </Form>
           </Row>
         </Col>
@@ -87,14 +99,14 @@ function Profile() {
             >
               {!editStatus ? (
                 <p
-                  className="edit text-secondary mb-0"
+                  className="edit text-light btn btn-dark my-0 mx-3"
                   onClick={() => setEditStatus(!editStatus)}
                 >
                   Edit
                 </p>
               ) : (
                 <p
-                  className="edit text-secondary mb-0"
+                  className="edit text-light btn btn-dark my-0 mx-3"
                   onClick={() => {
                     setEditStatus(!editStatus);
                     onClickConfirm();
