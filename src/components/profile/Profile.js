@@ -13,9 +13,10 @@ import {
   deleteAccount,
   uploadProfilePicture,
   readProfilePicture,
-} from "../../apiRoutes/UserRoutes";
+} from "../../apiRoutes/userRoutes";
 import CookieManager from "../../apiRoutes/cookieManager";
 import Buttons from "../subcomponents/Buttons";
+
 function Profile() {
   const dispatch = useDispatch();
 

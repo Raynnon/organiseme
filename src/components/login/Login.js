@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { userLogin, userRegister } from "../../apiRoutes/UserRoutes";
+import { userLogin, userRegister } from "../../apiRoutes/userRoutes";
 
 import { useDispatch } from "react-redux";
 import { setName } from "../../actions";
@@ -93,7 +93,7 @@ function Profile(props) {
             onChange={(e) => handleChange(e)}
           />
           <Form.Control
-            type="text"
+            type="password"
             id="password"
             className="fadeIn third bg-primary border-secondary text-light text-center mb-3 d-inline w-75 rounded-pill"
             name="password"

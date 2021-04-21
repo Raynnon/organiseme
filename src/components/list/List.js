@@ -7,11 +7,11 @@ import {
   deleteTasks,
 } from "../../apiRoutes/tasksRoutes";
 
-import { readProfilePicture } from "../../apiRoutes/UserRoutes";
+import { readProfilePicture, readProfile } from "../../apiRoutes/userRoutes";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { setImage } from "../../actions";
+import { setImage, setName } from "../../actions";
 
 import Task from "./Task";
 import Pie from "./Pie";
@@ -19,7 +19,7 @@ import Pie from "./Pie";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import Image from "react-bootstrap/Image";
 
-function Profile() {
+function List() {
   const dispatch = useDispatch();
 
   const name = useSelector((state) => state.user.name);
@@ -31,20 +31,28 @@ function Profile() {
   const [percentage, setPercentage] = useState(0);
 
   useEffect(() => {
-    if (!profilePicture) {
-      const picture = async () => {
-        dispatch(setImage(await readProfilePicture()));
-      };
-
-      picture();
-    }
-  }, [dispatch, profilePicture]);
-
-  useEffect(() => {
     getTasks().then((newTasks) => {
       setTasks(newTasks);
     });
   }, []);
+
+  useEffect(() => {
+    const picture = async () => {
+      dispatch(setImage(await readProfilePicture()));
+    };
+
+    picture();
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!name) {
+      const username = async () => {
+        dispatch(setName(await readProfile()));
+      };
+
+      username();
+    }
+  }, [dispatch, name]);
 
   // Reasign tasks completion
   useEffect(() => {
@@ -111,7 +119,7 @@ function Profile() {
           <h2 className="text-white">{name}</h2>
           <p className="text-secondary">
             Hello, you have {tasksInProgress}
-            {tasksCompleted === 1 ? " task" : " tasks"} to achieve!
+            {tasksInProgress === 1 ? " task" : " tasks"} to achieve!
           </p>
         </Col>
         <Col xs={12} md={3}>
@@ -174,4 +182,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default List;
