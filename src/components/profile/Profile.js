@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./profile.css";
 
 import { useDispatch, useSelector } from "react-redux";
 import { setName, setImage } from "../../actions";
@@ -50,102 +49,107 @@ function Profile() {
 
   return (
     <Container className="bg-primary rounded pb-5">
-      <Row className="mb-5">
-        <Col xs={12} md={6}>
-          <Row>
-            <Image
-              className="my-5 mx-auto d-block rounded-circle bg-secondary"
-              src={profilePicture}
-              alt="profile-image"
-              style={{ width: "150px" }}
-            />
-            <Form className="d-flex align-items-center">
-              <Form.Group className="m-0">
-                <label
-                  htmlFor="uploadAvatar"
-                  className="text-light btn btn-dark my-0 mx-3"
-                >
-                  Select new avatar
-                </label>
-                <Form.File
-                  id="uploadAvatar"
-                  onChange={handleChange}
-                  style={{
-                    position: "absolute",
-                    visibility: "hidden",
-                  }}
-                />
-              </Form.Group>
-            </Form>
-          </Row>
+      <Row className="pt-5 mb-5">
+        <Col xs={12} md={6} lg={3}>
+          <Image
+            className="mb-2 mx-auto d-block rounded-circle bg-secondary"
+            src={profilePicture}
+            alt="profile-image"
+            style={{ width: "150px" }}
+          />
         </Col>
-        <Col className="my-auto" xs={12} md={6}>
-          <Row>
-            <Col xs={12} md={{ span: "4", offset: "2" }}>
-              {!editStatus ? (
-                <h2 className="text-white text-center">{name}</h2>
-              ) : (
-                <Form.Control
-                  className="bg-primary border-secondary text-light"
-                  id="inputTask"
-                  placeholder={name}
-                  onChange={(e) => setNameChange(e.target.value)}
-                />
-              )}
-            </Col>
-            <Col
-              xs={{ span: "1", offset: "5" }}
-              md={{ span: "1", offset: "0" }}
-              className="my-auto"
-            >
-              {!editStatus ? (
-                <p
-                  className="edit text-light btn btn-dark my-0 mx-3"
-                  onClick={() => setEditStatus(!editStatus)}
-                >
-                  Edit
-                </p>
-              ) : (
-                <p
-                  className="edit text-light btn btn-dark my-0 mx-3"
-                  onClick={() => {
-                    setEditStatus(!editStatus);
-                    onClickConfirm();
-                  }}
-                >
-                  Confirm
-                </p>
-              )}
-            </Col>
+        <Col
+          xs={12}
+          md={6}
+          lg={3}
+          className="my-auto d-flex justify-content-center "
+        >
+          <Form className="d-flex align-items-center">
+            <Form.Group className="m-0">
+              <label
+                htmlFor="uploadAvatar"
+                className="text-light btn btn-dark my-0 mx-3"
+              >
+                Select new avatar
+              </label>
+              <Form.File
+                id="uploadAvatar"
+                onChange={handleChange}
+                style={{
+                  position: "absolute",
+                  visibility: "hidden",
+                }}
+              />
+            </Form.Group>
+          </Form>
+        </Col>
+
+        <Col
+          xs={6}
+          className="mt-4 mx-auto d-flex flex-column align-self-center"
+        >
+          <Row className="justify-content-center">
+            {!editStatus ? (
+              <h2 className="text-white text-center">{name}</h2>
+            ) : (
+              <Form.Control
+                className="bg-primary border-secondary text-light"
+                id="inputTask"
+                placeholder={name}
+                onChange={(e) => setNameChange(e.target.value)}
+              />
+            )}
+          </Row>
+
+          <Row className="justify-content-center">
+            {!editStatus ? (
+              <p
+                className="text-light btn btn-dark my-0 mx-3"
+                onClick={() => setEditStatus(!editStatus)}
+              >
+                Edit
+              </p>
+            ) : (
+              <p
+                className="text-light btn btn-dark my-0 mx-3"
+                onClick={() => {
+                  setEditStatus(!editStatus);
+                  onClickConfirm();
+                }}
+              >
+                Confirm
+              </p>
+            )}
           </Row>
         </Col>
       </Row>
-      <Row className="text-center">
-        <Col xs={12} className="d-flex justify-content-center">
-          <Buttons
-            bgColor={"#1f6153"}
-            textColor={"text-success"}
-            description={"Disconnect"}
-            handleClick={disconnect}
-          />
-        </Col>
-        <Col className="d-flex justify-content-center" xs={12}>
-          <Buttons
-            bgColor={"#4a3f77"}
-            textColor={"text-info"}
-            description={"Disconnect all devices"}
-            handleClick={() => disconnect("deleteCookies")}
-          />
-        </Col>
-      </Row>
-      <Row className="justify-content-center">
+
+      <Col xs={12} className="d-flex justify-content-center">
+        <Buttons
+          bgColor={"#1f6153"}
+          textColor={"text-success"}
+          description={"Disconnect"}
+          handleClick={disconnect}
+        />
+      </Col>
+
+      <Col xs={12} className="d-flex justify-content-center">
+        <Buttons
+          bgColor={"#4a3f77"}
+          textColor={"text-info"}
+          description={"Disconnect all devices"}
+          handleClick={() => disconnect("deleteCookies")}
+        />
+      </Col>
+
+      <Col xs={12} className="d-flex justify-content-center">
         <Buttons
           bgColor={"#773f3f"}
           textColor={"text-warning"}
           description={"Delete account"}
           handleClick={() => disconnect("deleteAccount")}
         />
-      </Row>
+      </Col>
     </Container>
   );
 }
