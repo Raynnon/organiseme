@@ -2,8 +2,10 @@ import axios from "axios";
 import CookieManager from "../apiRoutes/cookieManager";
 
 const axiosInstance = (route, options) => {
-  const urlTasks = "http://localhost:4000/tasks";
-  const urlUser = "http://localhost:4000/users";
+  console.log(process.env);
+  const urlTasks = process.env.REACT_APP_API_URL + "/tasks";
+  const urlUser = process.env.REACT_APP_API_URL + "/users";
+
   const token = CookieManager();
   let instance = "";
 

@@ -16,7 +16,8 @@ function App() {
   const name = useSelector((state) => state.user.name);
   const [activeElement, setActiveElement] = useState("List");
   const [token, setToken] = useState("");
-  
+
+  console.log(process.env);
   useEffect(() => {
     setToken(CookieManager());
   }, [name]);
