@@ -2,7 +2,6 @@ import axios from "axios";
 import CookieManager from "../apiRoutes/cookieManager";
 
 const axiosInstance = (route, options) => {
-  console.log(process.env);
   const urlTasks = process.env.REACT_APP_API_URL + "/tasks";
   const urlUser = process.env.REACT_APP_API_URL + "/users";
 
